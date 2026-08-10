@@ -1,0 +1,48 @@
+---
+export interface Props {
+  title: string;
+  description: string;
+  link?: string;
+  date: string;
+}
+const { title, description, link, date } = Astro.props;
+---
+
+<div
+  class="absolute -start-6 mt-1.5 h-3 w-3 rounded-full border border-cyan-200/40 bg-cyan-300 shadow-lg shadow-cyan-500/20"
+>
+</div>
+<time class="mb-1 text-sm font-medium leading-none text-cyan-100/80">
+  {date}
+</time>
+<h3 class="mt-2 text-lg font-semibold text-white">
+  {title}
+</h3>
+<p class="mb-4 text-base font-normal leading-7 text-slate-300 text-pretty">
+  {description}
+</p>
+{
+  link && (
+    <a
+      href={link}
+      class="inline-flex items-center rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-white transition hover:-translate-y-0.5 hover:border-cyan-300/30 hover:bg-white/10"
+    >
+      Learn more{" "}
+      <svg
+        class="ms-2 h-3 w-3 rtl:rotate-180"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 14 10"
+      >
+        <path
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M1 5h12m0 0L9 1m4 4L9 9"
+        />
+      </svg>
+    </a>
+  )
+}

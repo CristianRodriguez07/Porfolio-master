@@ -1,0 +1,29 @@
+---
+import ExperienceItem from "./ExperienceItem.astro";
+
+const EXPERIENCE = [
+  {
+    date: "2025-Actualidad",
+    title: "Process Mining con Celonis - Inetum",
+    description:
+      "En este rol, me he especializado en la optimización y analítica de procesos mediante Celonis (utilizando la transición de EMS a Process Intelligence Platform / PIG, Studio, PQL y PyCelonis), complementado con SQL y Python. Mi trabajo se centra en la extracción, transformación y modelado de datos para identificar ineficiencias, cuellos de botella y oportunidades de automatización en procesos clave de negocio. A través de la creación de dashboards avanzados y análisis cuantitativos, transformo datos complejos en insights accionables que impulsan la eficiencia operativa y la toma de decisiones estratégicas.",
+    },
+
+  {
+    date: "2023-2024",
+    title: "Desarrollador de software - Getronics",
+    description:
+      "En esta etapa, mi trayectoria abarca dos áreas fundamentales: el desarrollo y mantenimiento de software con SpringBoot, Angular y Node.js, y la optimización de procesos mediante Celonis (versiones 2024-2025: EMS / Process Intelligence Platform, Studio, PQL y PyCelonis) junto con SQL y Python. Esta experiencia combinada me ha proporcionado un perfil técnico muy completo, facilitando la colaboración en equipo y la rápida adaptación a las necesidades de cada proyecto.",
+  },
+];
+---
+
+<ol class="relative border-s border-white/15 pl-4">
+  {
+    EXPERIENCE.map((experiencie) => (
+      <li class="mb-10 ms-2">
+        <ExperienceItem {...experiencie} />
+      </li>
+    ))
+  }
+</ol>

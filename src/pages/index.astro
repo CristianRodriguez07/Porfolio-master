@@ -1,0 +1,183 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Badge from "../components/Badge.astro";
+import SectionContainer from "../components/Section.astro";
+import LinkedInIcon from "../components/Icons/LinkedIn.astro";
+import SocialPill from "../components/SocialPill.astro";
+import GitHubIcon from "../components/Icons/GitHub.astro";
+import GmailIcon from "../components/Icons/Gmail.astro";
+import Experience from "../components/Experience.astro";
+import Estudios from "../components/Estudios.astro";
+import CodeIcon from "../components/Icons/Code.astro";
+import RobotIcon from "../components/Icons/Robot.astro";
+import BoltIcon from "../components/Icons/Bolt.astro";
+import JavaScriptIcon from "../components/Icons/JavaScript.astro";
+import JavaIcon from "../components/Icons/Java.astro";
+import MySQLIcon from "../components/Icons/MySQL.astro";
+import PythonIcon from "../components/Icons/Python.astro";
+import ReactIcon from "../components/Icons/React.astro";
+import AngularIcon from "../components/Icons/Angular.astro";
+import NodejsIcon from "../components/Icons/Nodejs.astro";
+import SpringIcon from "../components/Icons/Spring.astro";
+import CelonisIcon from "../components/Icons/Celonis.astro";
+---
+
+<Layout
+  title="Portfolio de Cristian Rodríguez - Desarrollador y Programador de software"
+  description="Contrata a Cristian Rodríguez, Desarrollador de software Full Stack, para tu próximo proyecto."
+>
+  <main class="relative overflow-hidden pb-10">
+    <div class="pointer-events-none absolute inset-x-0 top-0 -z-10 mx-auto h-[34rem] w-[34rem] rounded-full bg-cyan-400/10 blur-3xl"></div>
+    <SectionContainer class="pt-10 md:pt-14 lg:pt-20">
+      <div class="grid items-center gap-8 lg:grid-cols-[1.15fr_0.85fr]">
+        <div class="space-y-6">
+          <div class="inline-flex items-center gap-3 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-200 shadow-lg shadow-slate-950/20 backdrop-blur-xl">
+            <Badge>Disponible para trabajar</Badge>
+            <span class="hidden sm:inline text-slate-300">Full Stack Developer</span>
+          </div>
+          <h1 class="max-w-3xl text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-7xl">
+            Desarrollador Full Stack / Especializado en Process Mining.
+          </h1>
+          <p class="max-w-2xl text-lg leading-8 text-slate-300 sm:text-xl">
+            Soy Cristian Rodríguez, desarrollador full stack en Madrid. Me enfoco en construir productos claros, funcionales y con una identidad visual más cuidada.
+          </p>
+          <div class="flex flex-wrap gap-3">
+            <a href="#experiencia" class="rounded-full bg-cyan-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:-translate-y-0.5 hover:bg-cyan-300">
+              Ver experiencia
+            </a>
+            <a href="mailto:cr113022@gmail.com" class="rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:border-cyan-300/30 hover:bg-white/10">
+              Hablemos
+            </a>
+          </div>
+          <nav class="flex flex-wrap gap-3 pt-2">
+            <SocialPill href="https://www.linkedin.com/in/cristian-alcides-rodr%C3%ADguez-cervantes-a3b705250/">
+              <LinkedInIcon class="size-4 md:size-6" />
+              LinkedIn
+            </SocialPill>
+            <SocialPill href="https://github.com/CristianRodriguez07">
+              <GitHubIcon class="size-4 md:size-6" />
+              GitHub
+            </SocialPill>
+            <SocialPill href="mailto:cr113022@gmail.com">
+              <GmailIcon class="size-4 md:size-6" />
+              Contacto
+            </SocialPill>
+            <SocialPill href="/Cristian_Rodriguez_CV.pdf" download="Cristian_Rodriguez_CV.pdf">
+              <CodeIcon class="size-4 md:size-6" />
+              Mi CV
+            </SocialPill>
+          </nav>
+        </div>
+
+        <aside class="rounded-[2rem] border border-white/10 bg-slate-950/55 p-5 shadow-2xl shadow-slate-950/30 backdrop-blur-xl sm:p-6">
+          <div class="rounded-[1.5rem] border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-5">
+            <div class="flex items-start justify-between gap-4">
+              <div>
+                <p class="text-sm uppercase tracking-[0.35em] text-cyan-200/80">Perfil</p>
+                <h2 class="mt-3 text-2xl font-semibold text-white">Desarrollador con foco en minería de procesos</h2>
+              </div>
+              <div class="rounded-2xl border border-cyan-300/20 bg-cyan-300/10 px-3 py-2 text-right text-xs text-cyan-100">
+                Madrid<br />España
+              </div>
+            </div>
+
+            <div class="mt-6 grid gap-3 sm:grid-cols-2">
+              <div class="rounded-2xl border border-white/10 bg-slate-900/60 p-4">
+                <p class="text-xs uppercase tracking-[0.3em] text-slate-400">Stack</p>
+                <p class="mt-2 text-base font-semibold text-white">Celonis · SQL · Python</p>
+              </div>
+              <div class="rounded-2xl border border-white/10 bg-slate-900/60 p-4">
+                <p class="text-xs uppercase tracking-[0.3em] text-slate-400">Foco</p>
+                <p class="mt-2 text-lg font-semibold text-white">UI limpia y rendimiento</p>
+              </div>
+            </div>
+
+            <div class="mt-6 rounded-2xl border border-white/10 bg-white/5 p-4">
+              <p class="text-sm text-slate-300">
+                Automatizo procesos para mejorar eficiencia y reducir errores.
+              </p>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </SectionContainer>
+
+    <SectionContainer id="sobre-mi">
+      <div class="rounded-[2rem] border border-white/10 bg-slate-950/45 p-6 shadow-2xl shadow-slate-950/20 backdrop-blur-xl md:p-8">
+        <h2 class="mb-5 flex items-center gap-x-3 text-2xl font-semibold text-white">
+          <RobotIcon class="size-8" />
+          Sobre mí
+        </h2>
+        <p class="mb-4 max-w-4xl text-lg leading-8 text-slate-300 text-pretty">
+          Soy un joven desarrollador con más de 2 años de experiencia en minería de procesos con Celonis. Trabajo con SQL y Python para automatizar y optimizar procesos, transformando datos en mejoras medibles de eficiencia y reduciendo errores operativos.
+        </p>
+        <p class="max-w-4xl text-lg leading-8 text-cyan-100/80 text-pretty">
+          Mi objetivo es contribuir de manera significativa a la innovación tecnológica, aplicando mis conocimientos y desarrollando habilidades que me permitan ser parte activa de los cambios y avances que están transformando el futuro.
+        </p>
+      </div>
+    </SectionContainer>
+
+    <SectionContainer id="experiencia">
+      <div class="rounded-[2rem] border border-white/10 bg-slate-950/45 p-6 shadow-2xl shadow-slate-950/20 backdrop-blur-xl md:p-8">
+        <h2 class="mb-5 flex items-center gap-x-3 text-2xl font-semibold text-white">
+          <CodeIcon class="size-8" />
+          Mi experiencia
+        </h2>
+        <div class="space-y-6">
+          <div>
+            <h3 class="text-lg font-semibold text-white">Experiencia laboral</h3>
+            <Experience />
+          </div>
+
+          <div>
+            <h3 class="text-lg font-semibold text-white">Formación</h3>
+            <Estudios />
+          </div>
+        </div>
+      </div>
+    </SectionContainer>
+
+    <SectionContainer id="skills">
+      <div class="rounded-[2rem] border border-white/10 bg-slate-950/45 p-6 shadow-2xl shadow-slate-950/20 backdrop-blur-xl md:p-8">
+        <h2 class="mb-5 flex items-center gap-x-3 text-2xl font-semibold text-white">
+          <BoltIcon class="size-8" />
+          Skills
+        </h2>
+        <nav class="flex flex-wrap gap-3">
+          <SocialPill>
+            <SpringIcon class="size-4 md:size-6" />
+            Spring Boot
+          </SocialPill>
+          <SocialPill>
+            <PythonIcon class="size-4 md:size-6" />
+            Python
+          </SocialPill>
+          <SocialPill>
+            <AngularIcon class="size-4 md:size-6" />
+            Angular
+          </SocialPill>
+            <SocialPill>
+              <CelonisIcon class="size-4 md:size-6" />
+              Celonis
+            </SocialPill>
+          <SocialPill>
+            <NodejsIcon class="size-4 md:size-6" />
+            Node.js
+          </SocialPill>
+          <SocialPill>
+            <JavaScriptIcon class="size-4 md:size-6" />
+            JavaScript
+          </SocialPill>
+          <SocialPill>
+            <JavaIcon class="size-4 md:size-6" />
+            Java
+          </SocialPill>
+          <SocialPill>
+            <MySQLIcon class="size-4 md:size-6" />
+            MySQL
+          </SocialPill>
+        </nav>
+      </div>
+    </SectionContainer>
+  </main>
+</Layout>

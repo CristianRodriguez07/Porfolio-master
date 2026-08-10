@@ -1,0 +1,36 @@
+---
+import ExperienceItem from "./ExperienceItem.astro";
+
+const STUDIES = [
+  {
+    date: "2024-2026",
+    title:
+      "Postgrado en Desarrollo de Aplicaciones web // Blockchain - Cesur Plaza Elíptica",
+    description:
+      "He completado un Postgrado en Desarrollo de Aplicaciones web // Blockchain, donde aprendí a desarrollar aplicaciones web y a trabajar con tecnologías emergentes como Blockchain. Este postgrado me permitió profundizar en mis conocimientos de desarrollo y adquirir nuevas habilidades que me permiten afrontar nuevos retos en el ámbito de la tecnología.",
+  },
+  {
+    date: "2022-2024",
+    title:
+      "Grado Superior en Desarrollo de Aplicaciones Multiplataforma - Cesur Plaza Elíptica",
+    description:
+      "Durante mis estudios en Desarrollo de Aplicaciones Multiplataforma (DAM), adquirí una sólida base en el diseño y desarrollo de software para diversos dispositivos. Aprendí a programar en lenguajes como Java, Kotlin, HTML y CSS, enfocándome en el desarrollo de aplicaciones en entornos Android. También me especialicé en bases de datos, trabajando con MySQL para la gestión y manipulación de datos. Además, durante un breve periodo, aprendí los fundamentos de Python, ampliando mis capacidades en el ámbito del desarrollo.",
+  },
+  {
+    date: "2020-2022",
+    title: "Ciencias tecnológicas | Bachillerato - IES GRAN CAPITÁN",
+    description:
+      "Estudios de Bachillerato en la modalidad de Ciencias Tecnológicas en el IES GRAN CAPITÁN, centrado en matemáticas, física, tecnología y fundamentos de programación.",
+  },
+];
+---
+
+<ol class="relative border-s border-white/15 pl-4">
+  {
+    STUDIES.map((study) => (
+      <li class="mb-10 ms-2">
+        <ExperienceItem {...study} />
+      </li>
+    ))
+  }
+</ol>
