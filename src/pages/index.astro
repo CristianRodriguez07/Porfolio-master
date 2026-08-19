@@ -194,40 +194,51 @@ import CelonisIcon from "../components/Icons/Celonis.astro";
           <BoltIcon class="size-8" />
           Skills
         </h2>
-        <nav class="flex flex-wrap gap-3">
-          <SocialPill>
-            <SpringIcon class="size-4 md:size-6" />
-            Spring Boot
-          </SocialPill>
-          <SocialPill>
-            <PythonIcon class="size-4 md:size-6" />
-            Python
-          </SocialPill>
-          <SocialPill>
-            <AngularIcon class="size-4 md:size-6" />
-            Angular
-          </SocialPill>
+        <div class="space-y-6">
+          <div>
+            <h3 class="mb-3 text-lg font-semibold text-cyan-100">Process Mining y datos</h3>
+            <nav class="flex flex-wrap gap-3" aria-label="Skills de Process Mining y datos">
             <SocialPill>
               <CelonisIcon class="size-4 md:size-6" />
               Celonis
             </SocialPill>
-          <SocialPill>
-            <NodejsIcon class="size-4 md:size-6" />
-            Node.js
-          </SocialPill>
-          <SocialPill>
-            <JavaScriptIcon class="size-4 md:size-6" />
-            JavaScript
-          </SocialPill>
-          <SocialPill>
-            <JavaIcon class="size-4 md:size-6" />
-            Java
-          </SocialPill>
-          <SocialPill>
-            <MySQLIcon class="size-4 md:size-6" />
-            MySQL
-          </SocialPill>
-        </nav>
+              <SocialPill>
+                <MySQLIcon class="size-4 md:size-6" />
+                SQL
+              </SocialPill>
+              <SocialPill>
+                <PythonIcon class="size-4 md:size-6" />
+                Python
+              </SocialPill>
+            </nav>
+          </div>
+
+          <div>
+            <h3 class="mb-3 text-lg font-semibold text-cyan-100">Desarrollador</h3>
+            <nav class="flex flex-wrap gap-3" aria-label="Skills de desarrollo">
+              <SocialPill>
+                <SpringIcon class="size-4 md:size-6" />
+                Spring Boot
+              </SocialPill>
+              <SocialPill>
+                <AngularIcon class="size-4 md:size-6" />
+                Angular
+              </SocialPill>
+              <SocialPill>
+                <NodejsIcon class="size-4 md:size-6" />
+                Node.js
+              </SocialPill>
+              <SocialPill>
+                <JavaScriptIcon class="size-4 md:size-6" />
+                JavaScript
+              </SocialPill>
+              <SocialPill>
+                <JavaIcon class="size-4 md:size-6" />
+                Java
+              </SocialPill>
+            </nav>
+          </div>
+        </div>
       </div>
     </SectionContainer>
   </main>
