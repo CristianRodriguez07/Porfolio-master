@@ -13,11 +13,51 @@
         <p class="text-xs text-slate-300">Full Stack Developer</p>
       </div>
     </a>
-    <nav class="flex flex-wrap items-center justify-end gap-2 text-xs font-medium text-slate-200 sm:gap-3 lg:text-sm">
-      <a class="rounded-full border border-white/10 bg-white/5 px-3 py-2 transition hover:-translate-y-0.5 hover:border-cyan-300/30 hover:bg-cyan-300/10" href="/">Inicio</a>
-      <a class="rounded-full border border-white/10 bg-white/5 px-3 py-2 transition hover:-translate-y-0.5 hover:border-cyan-300/30 hover:bg-cyan-300/10" href="#sobre-mi">Sobre mí</a>
-      <a class="rounded-full border border-white/10 bg-white/5 px-3 py-2 transition hover:-translate-y-0.5 hover:border-cyan-300/30 hover:bg-cyan-300/10" href="#experiencia">Experiencia</a>
-      <a class="rounded-full border border-white/10 bg-gradient-to-r from-cyan-400/20 to-sky-500/20 px-3 py-2 text-cyan-50 transition hover:-translate-y-0.5 hover:border-cyan-200/40 hover:from-cyan-400/30 hover:to-sky-500/30" href="#skills">Skills</a>
+    <nav class="flex flex-wrap items-center justify-end gap-2 text-xs font-medium text-slate-200 sm:gap-3 lg:text-sm" aria-label="Navegación principal">
+      <a class="nav-link rounded-full border border-white/10 bg-white/5 px-3 py-2 transition hover:-translate-y-0.5 hover:border-cyan-300/30 hover:bg-cyan-300/10" href="/" data-section="inicio" aria-current="page">Inicio</a>
+      <a class="nav-link rounded-full border border-white/10 bg-white/5 px-3 py-2 transition hover:-translate-y-0.5 hover:border-cyan-300/30 hover:bg-cyan-300/10" href="#sobre-mi" data-section="sobre-mi">Sobre mí</a>
+      <a class="nav-link rounded-full border border-white/10 bg-white/5 px-3 py-2 transition hover:-translate-y-0.5 hover:border-cyan-300/30 hover:bg-cyan-300/10" href="#experiencia" data-section="experiencia">Experiencia</a>
+      <a class="nav-link rounded-full border border-white/10 bg-white/5 px-3 py-2 transition hover:-translate-y-0.5 hover:border-cyan-300/30 hover:bg-cyan-300/10" href="#certificaciones" data-section="certificaciones">Certificaciones</a>
+      <a class="nav-link rounded-full border border-white/10 bg-white/5 px-3 py-2 transition hover:-translate-y-0.5 hover:border-cyan-300/30 hover:bg-cyan-300/10" href="https://github.com/CristianRodriguez07?tab=repositories" target="_blank" rel="noreferrer">Proyectos</a>
+      <a class="nav-link rounded-full border border-white/10 bg-gradient-to-r from-cyan-400/20 to-sky-500/20 px-3 py-2 text-cyan-50 transition hover:-translate-y-0.5 hover:border-cyan-200/40 hover:from-cyan-400/30 hover:to-sky-500/30" href="#skills" data-section="skills">Skills</a>
     </nav>
   </div>
 </header>
+
+<script>
+  const navLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>(".nav-link[data-section]"));
+  const sections = navLinks
+    .map((link) => document.getElementById(link.dataset.section ?? ""))
+    .filter((section): section is HTMLElement => section !== null);
+
+  const setActiveLink = (sectionId: string) => {
+    navLinks.forEach((link) => {
+      const isActive = link.dataset.section === sectionId;
+      link.classList.toggle("border-cyan-200/40", isActive);
+      link.classList.toggle("bg-cyan-300/15", isActive);
+      link.classList.toggle("text-cyan-50", isActive);
+      if (isActive) {
+        link.setAttribute("aria-current", "page");
+      } else {
+        link.removeAttribute("aria-current");
+      }
+    });
+  };
+
+  navLinks.forEach((link) => {
+    link.addEventListener("click", () => {
+      const sectionId = link.dataset.section;
+      if (sectionId) setActiveLink(sectionId);
+    });
+  });
+
+  const sectionObserver = new IntersectionObserver(
+    (entries) => {
+      const visibleSection = entries.find((entry) => entry.isIntersecting);
+      if (visibleSection) setActiveLink(visibleSection.target.id);
+    },
+    { rootMargin: "-25% 0px -60%", threshold: 0 },
+  );
+
+  sections.forEach((section) => sectionObserver.observe(section));
+</script>
