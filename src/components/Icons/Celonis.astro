@@ -1,14 +1,14 @@
 ---
-import celonisLogo from "./Celonis Logo Vector.svg";
+import celonisLogo from "./Celonis Logo Vector.svg?raw";
 
 const { class: className, ...imageProps } = Astro.props;
+const whiteCelonisLogo = celonisLogo.replace("<svg ", '<svg fill="#ffffff" ');
 ---
 
-<img
+<span
   {...imageProps}
   class={className}
-  src={celonisLogo.src}
-  alt=""
+  set:html={whiteCelonisLogo}
   aria-hidden="true"
   style="display:inline-block;width:1.6em;height:1.6em;vertical-align:middle;object-fit:contain"
-/>
+></span>
