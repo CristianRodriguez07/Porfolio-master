@@ -1,5 +1,6 @@
 ---
 import Footer from "../components/Footer.astro";
+import GhostFibers from "../components/GhostFibers.astro";
 import Header from "../components/Header.astro";
 
 import "@fontsource-variable/onest";
@@ -27,6 +28,8 @@ const { description, title } = Astro.props;
     <title>{title}</title>
   </head>
   <body>
+    <canvas class="ghost-fibers" aria-hidden="true"></canvas>
+    <GhostFibers />
     <Header />
     <slot />
     <Footer />
@@ -167,17 +170,29 @@ const { description, title } = Astro.props;
   body {
     margin: 0;
     color: var(--text-main);
-    background:
-      radial-gradient(circle at top left, rgba(56, 189, 248, 0.22), transparent 34%),
-      radial-gradient(circle at top right, rgba(168, 85, 247, 0.18), transparent 28%),
-      radial-gradient(circle at 20% 85%, rgba(14, 165, 233, 0.12), transparent 30%),
-      linear-gradient(180deg, var(--page-bg) 0%, var(--page-bg-2) 48%, var(--page-bg-3) 100%);
+    background: linear-gradient(180deg, var(--page-bg) 0%, var(--page-bg-2) 48%, var(--page-bg-3) 100%);
     display: flex;
     flex-direction: column;
     min-height: 100vh;
     position: relative;
     overflow-x: hidden;
     background-attachment: fixed;
+  }
+
+  body > main,
+  body > footer {
+    position: relative;
+    z-index: 1;
+  }
+
+  canvas.ghost-fibers {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    opacity: 0.98;
   }
 
   body::before,
@@ -191,15 +206,43 @@ const { description, title } = Astro.props;
 
   body::before {
     background:
-      linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-    background-size: 100% 100%, 72px 72px;
-    mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.36), transparent 85%);
-    opacity: 0.25;
+      linear-gradient(116deg, transparent 0 32%, rgba(56, 189, 248, 0.12) 42%, transparent 54%),
+      linear-gradient(244deg, transparent 0 46%, rgba(45, 212, 191, 0.1) 56%, transparent 67%),
+      repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 72px),
+      repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.025) 0 1px, transparent 1px 72px);
+    background-size: 180% 180%, 180% 180%, 72px 72px, 72px 72px;
+    mask-image: linear-gradient(180deg, black, transparent 92%);
+    opacity: 0.5;
+    animation: ambient-drift 18s ease-in-out infinite alternate;
   }
 
   body::after {
-    background: radial-gradient(circle at center, transparent 40%, rgba(2, 6, 23, 0.42));
+    background:
+      conic-gradient(from 210deg at 50% -10%, transparent 0deg, rgba(14, 165, 233, 0.08) 55deg, transparent 115deg),
+      linear-gradient(180deg, transparent 0%, rgba(2, 6, 23, 0.18) 60%, rgba(2, 6, 23, 0.52) 100%);
+    mix-blend-mode: screen;
+    opacity: 0.8;
+    animation: ambient-pulse 12s ease-in-out infinite alternate;
+  }
+
+  @keyframes ambient-drift {
+    0% {
+      background-position: 0% 0%, 100% 20%, 0 0, 0 0;
+    }
+    100% {
+      background-position: 28% 18%, 72% 44%, 36px 28px, 0 36px;
+    }
+  }
+
+  @keyframes ambient-pulse {
+    0% {
+      opacity: 0.55;
+      transform: scale(1);
+    }
+    100% {
+      opacity: 0.9;
+      transform: scale(1.04);
+    }
   }
 
   a {
@@ -215,6 +258,11 @@ const { description, title } = Astro.props;
   @media (prefers-reduced-motion: reduce) {
     html {
       scroll-behavior: auto;
+    }
+
+    body::before,
+    body::after {
+      animation: none;
     }
   }
 </style>

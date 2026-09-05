@@ -1,29 +1,35 @@
-<header class="sticky top-0 z-50 px-4 pt-4">
+<header class="sticky top-0 z-50 px-4 pt-4" data-header>
   <div
-    class="mx-auto flex w-full max-w-[1120px] items-center justify-between gap-4 rounded-full border border-white/10 bg-slate-950/55 px-4 py-3 shadow-2xl shadow-slate-950/30 backdrop-blur-xl lg:px-6"
+    class="header-shell mx-auto flex w-full max-w-[1120px] flex-col gap-3 rounded-3xl border border-white/10 bg-slate-950/55 px-3 py-3 shadow-2xl shadow-slate-950/30 backdrop-blur-xl sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:rounded-full sm:px-4 lg:px-6"
   >
-    <a href="/" class="flex items-center gap-3">
+    <a href="/" class="flex min-w-0 items-center gap-3">
       <img
-        class="size-12 rounded-full border border-white/20 object-cover shadow-lg shadow-cyan-500/10"
+        class="size-11 shrink-0 rounded-full border border-white/20 object-cover shadow-lg shadow-cyan-500/10 sm:size-12"
         src="/cr-logo.svg"
         alt="Logo de Cristian Rodríguez"
       />
-      <div class="hidden sm:block">
-        <p class="text-sm font-semibold tracking-wide text-white">Cristian Rodríguez</p>
-        <p class="text-xs text-slate-300">Full Stack Developer</p>
+      <div class="min-w-0">
+        <p class="truncate text-xs font-semibold tracking-wide text-white sm:text-sm">Cristian Rodríguez</p>
+        <p class="header-subtitle text-xs text-slate-300">Full Stack Developer</p>
       </div>
     </a>
-    <nav class="flex flex-wrap items-center justify-end gap-2 text-xs font-medium text-slate-200 sm:gap-3 lg:text-sm" aria-label="Navegación principal">
-      <a class="nav-link rounded-full border border-white/10 bg-white/5 px-3 py-2 transition hover:-translate-y-0.5 hover:border-cyan-300/30 hover:bg-cyan-300/10" href="/" data-section="inicio" aria-current="page">Inicio</a>
-      <a class="nav-link rounded-full border border-white/10 bg-white/5 px-3 py-2 transition hover:-translate-y-0.5 hover:border-cyan-300/30 hover:bg-cyan-300/10" href="#sobre-mi" data-section="sobre-mi">Sobre mí</a>
-      <a class="nav-link rounded-full border border-white/10 bg-white/5 px-3 py-2 transition hover:-translate-y-0.5 hover:border-cyan-300/30 hover:bg-cyan-300/10" href="#experiencia" data-section="experiencia">Experiencia</a>
-      <a class="nav-link rounded-full border border-white/10 bg-white/5 px-3 py-2 transition hover:-translate-y-0.5 hover:border-cyan-300/30 hover:bg-cyan-300/10" href="#certificaciones" data-section="certificaciones">Certificaciones</a>
-      <a class="nav-link rounded-full border border-white/10 bg-gradient-to-r from-cyan-400/20 to-sky-500/20 px-3 py-2 text-cyan-50 transition hover:-translate-y-0.5 hover:border-cyan-200/40 hover:from-cyan-400/30 hover:to-sky-500/30" href="#skills" data-section="skills">Skills</a>
+    <nav class="mobile-nav grid w-full grid-cols-2 gap-2 border-t border-white/10 px-1 pt-3 text-xs font-medium text-slate-200 sm:flex sm:w-auto sm:justify-end sm:gap-3 sm:border-t-0 sm:px-0 sm:pt-0 lg:text-sm" aria-label="Navegación principal">
+      <a class="nav-link rounded-full border border-white/10 bg-white/5 px-3 py-2.5 text-center transition hover:-translate-y-0.5 hover:border-cyan-300/30 hover:bg-cyan-300/10 sm:shrink-0 sm:px-3.5" href="#inicio" data-section="inicio" aria-current="page">Inicio</a>
+      <a class="nav-link rounded-full border border-white/10 bg-white/5 px-3 py-2.5 text-center transition hover:-translate-y-0.5 hover:border-cyan-300/30 hover:bg-cyan-300/10 sm:shrink-0 sm:px-3.5" href="#sobre-mi" data-section="sobre-mi">Sobre mí</a>
+      <a class="nav-link rounded-full border border-white/10 bg-white/5 px-3 py-2.5 text-center transition hover:-translate-y-0.5 hover:border-cyan-300/30 hover:bg-cyan-300/10 sm:shrink-0 sm:px-3.5" href="#experiencia" data-section="experiencia">Experiencia</a>
+      <a class="nav-link rounded-full border border-white/10 bg-white/5 px-3 py-2.5 text-center transition hover:-translate-y-0.5 hover:border-cyan-300/30 hover:bg-cyan-300/10 sm:shrink-0 sm:px-3.5" href="#certificaciones" data-section="certificaciones">Certificaciones</a>
+      <a class="nav-link rounded-full border border-white/10 bg-gradient-to-r from-cyan-400/20 to-sky-500/20 px-3 py-2.5 text-center text-cyan-50 transition hover:-translate-y-0.5 hover:border-cyan-200/40 hover:from-cyan-400/30 hover:to-sky-500/30 sm:shrink-0 sm:px-3.5" href="#skills" data-section="skills">Skills</a>
     </nav>
   </div>
 </header>
 
 <script>
+  const header = document.querySelector<HTMLElement>("[data-header]");
+  const updateHeaderState = () => header?.classList.toggle("is-scrolled", window.scrollY > 24);
+
+  window.addEventListener("scroll", updateHeaderState, { passive: true });
+  updateHeaderState();
+
   const navLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>(".nav-link[data-section]"));
   const sections = navLinks
     .map((link) => document.getElementById(link.dataset.section ?? ""))
@@ -44,7 +50,11 @@
   };
 
   navLinks.forEach((link) => {
-    link.addEventListener("click", () => {
+    link.addEventListener("click", (event) => {
+      if (link.dataset.section === "inicio") {
+        event.preventDefault();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
       const sectionId = link.dataset.section;
       if (sectionId) setActiveLink(sectionId);
     });
@@ -60,3 +70,66 @@
 
   sections.forEach((section) => sectionObserver.observe(section));
 </script>
+
+<style>
+  header {
+    transition: padding-top 180ms ease;
+  }
+
+  .header-shell {
+    transition: gap 180ms ease, padding 180ms ease, border-radius 180ms ease;
+  }
+
+  .is-scrolled {
+    padding-top: 0.5rem;
+  }
+
+  .is-scrolled .header-shell {
+    gap: 0.5rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-radius: 1rem;
+  }
+
+  .is-scrolled .header-subtitle {
+    display: none;
+  }
+
+  .mobile-nav {
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .is-scrolled .header-shell {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .is-scrolled .mobile-nav {
+    min-width: 0;
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    overflow-x: auto;
+    border-top: 0;
+    padding-top: 0;
+  }
+
+  .is-scrolled .mobile-nav .nav-link {
+    flex-shrink: 0;
+    padding: 0.5rem 0.75rem;
+  }
+
+  @media (min-width: 640px) {
+    .is-scrolled .mobile-nav {
+      flex: initial;
+      justify-content: flex-end;
+      overflow: visible;
+    }
+  }
+
+  .mobile-nav::-webkit-scrollbar {
+    display: none;
+  }
+</style>

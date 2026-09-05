@@ -1,0 +1,115 @@
+<script>
+  import { Mesh, Program, Renderer, Triangle } from "ogl";
+
+  const canvas = document.querySelector<HTMLCanvasElement>(".ghost-fibers");
+
+  if (canvas) {
+    const renderer = new Renderer({
+      alpha: true,
+      antialias: false,
+      dpr: Math.min(window.devicePixelRatio, 2),
+      canvas,
+    });
+    const gl = renderer.gl;
+    const geometry = new Triangle(gl);
+    const program = new Program(gl, {
+      vertex: /* glsl */ `
+        attribute vec2 position;
+
+        void main() {
+          gl_Position = vec4(position, 0.0, 1.0);
+        }
+      `,
+      fragment: /* glsl */ `
+        precision highp float;
+
+        uniform float uTime;
+        uniform vec2 uResolution;
+
+        void main() {
+          vec2 uv = gl_FragCoord.xy / uResolution;
+          vec2 point = uv - 0.5;
+          point.x *= uResolution.x / uResolution.y;
+
+          vec3 color = vec3(0.032, 0.05, 0.095);
+          float time = uTime * 0.16;
+
+          for (int i = 0; i < 42; i++) {
+            float index = float(i);
+            float offset = (index / 41.0 - 0.5) * 1.9;
+            float phase = index * 1.73;
+            float wave = sin(point.x * (2.2 + mod(index, 5.0) * 0.28) + time + phase) * 0.09;
+            wave += sin(point.x * 6.0 - time * 1.4 + phase * 0.7) * 0.025;
+            float distanceToFiber = abs(point.y - offset - wave);
+            float fiber = exp(-distanceToFiber * (145.0 + mod(index, 4.0) * 22.0));
+            float fade = smoothstep(1.15, 0.05, abs(point.x));
+            float shimmer = 0.55 + 0.45 * sin(time * 2.0 + phase);
+
+            vec3 fiberColor = mix(
+              vec3(0.08, 0.72, 0.95),
+              vec3(0.18, 0.92, 0.78),
+              0.5 + 0.5 * sin(phase)
+            );
+            color += fiberColor * fiber * fade * shimmer * 0.42;
+          }
+
+          float horizon = exp(-abs(point.y + 0.08) * 3.0) * 0.035;
+          color += vec3(0.02, 0.12, 0.18) * horizon;
+          gl_FragColor = vec4(color, 1.0);
+        }
+      `,
+      uniforms: {
+        uTime: { value: 0 },
+        uResolution: { value: [window.innerWidth, window.innerHeight] },
+      },
+    });
+    const mesh = new Mesh(gl, { geometry, program });
+    let frame = 0;
+    let isVisible = true;
+
+    const resize = () => {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      renderer.setSize(width, height);
+      program.uniforms.uResolution.value = [width, height];
+    };
+
+    const render = (time: number) => {
+      if (isVisible) {
+        program.uniforms.uTime.value = time * 0.001;
+        renderer.render({ scene: mesh });
+      }
+      frame = requestAnimationFrame(render);
+    };
+
+    document.addEventListener("visibilitychange", () => {
+      isVisible = document.visibilityState === "visible";
+    });
+    window.addEventListener("resize", resize, { passive: true });
+    resize();
+    frame = requestAnimationFrame(render);
+
+    window.addEventListener("pagehide", () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("resize", resize);
+    }, { once: true });
+  }
+</script>
+
+<style>
+  .ghost-fibers {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    opacity: 0.92;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ghost-fibers {
+      opacity: 0.68;
+    }
+  }
+</style>

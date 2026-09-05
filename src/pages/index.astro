@@ -26,38 +26,37 @@ import CelonisIcon from "../components/Icons/Celonis.astro";
   title="Portfolio de Cristian Rodríguez - Desarrollador y Programador de software"
   description="Contrata a Cristian Rodríguez, Desarrollador de software Full Stack, para tu próximo proyecto."
 >
-  <main class="relative overflow-hidden pb-10">
-    <div class="pointer-events-none absolute inset-x-0 top-0 -z-10 mx-auto h-[34rem] w-[34rem] rounded-full bg-cyan-400/10 blur-3xl"></div>
-    <SectionContainer class="pt-10 md:pt-14 lg:pt-20">
+  <main id="inicio" class="relative scroll-mt-28 overflow-hidden pb-10">
+    <SectionContainer class="pt-8 md:pt-14 lg:pt-20">
       <div class="grid items-center gap-8 lg:grid-cols-[1.15fr_0.85fr]">
         <div class="space-y-6">
           <div class="inline-flex items-center gap-3 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-200 shadow-lg shadow-slate-950/20 backdrop-blur-xl">
             <Badge>Disponible para trabajar</Badge>
             <span class="hidden sm:inline text-slate-300">Full Stack Developer</span>
           </div>
-          <h1 class="max-w-3xl text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-7xl">
+          <h1 class="max-w-3xl text-3xl font-semibold leading-tight tracking-tight text-white sm:text-5xl lg:text-7xl">
             Desarrollador Full Stack / Especializado en Process Mining.
           </h1>
           <p class="max-w-2xl text-lg leading-8 text-slate-300 sm:text-xl">
             Soy Cristian Rodríguez, desarrollador full stack en Madrid. Me enfoco en construir productos claros, funcionales y con una identidad visual más cuidada.
           </p>
-          <div class="flex flex-wrap gap-3">
-            <a href="#experiencia" class="rounded-full bg-cyan-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:-translate-y-0.5 hover:bg-cyan-300">
+          <div class="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <a href="#experiencia" class="w-full rounded-full bg-cyan-400 px-5 py-3 text-center text-sm font-semibold text-slate-950 transition hover:-translate-y-0.5 hover:bg-cyan-300 sm:w-auto">
               Ver experiencia
             </a>
-            <a href="mailto:cr113022@gmail.com" class="rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:border-cyan-300/30 hover:bg-white/10">
+            <a href="mailto:cr113022@gmail.com" class="w-full rounded-full border border-white/10 bg-white/5 px-5 py-3 text-center text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:border-cyan-300/30 hover:bg-white/10 sm:w-auto">
               Hablemos
             </a>
             <button
               type="button"
               data-language-toggle
               aria-label="Traducir al inglés"
-              class="rounded-full border border-cyan-300/30 bg-cyan-300/10 px-5 py-3 text-sm font-semibold text-cyan-50 transition hover:-translate-y-0.5 hover:border-cyan-200/50 hover:bg-cyan-300/20"
+              class="w-full rounded-full border border-cyan-300/30 bg-cyan-300/10 px-5 py-3 text-center text-sm font-semibold text-cyan-50 transition hover:-translate-y-0.5 hover:border-cyan-200/50 hover:bg-cyan-300/20 sm:w-auto"
             >
               English Version
             </button>
           </div>
-          <nav class="flex flex-wrap gap-3 pt-2">
+          <nav class="flex max-w-full flex-wrap gap-3 overflow-hidden pt-2">
             <SocialPill href="https://www.linkedin.com/in/cristian-alcides-rodr%C3%ADguez-cervantes-a3b705250/">
               <LinkedInIcon class="size-4 md:size-6" />
               LinkedIn
@@ -81,12 +80,12 @@ import CelonisIcon from "../components/Icons/Celonis.astro";
           </nav>
         </div>
 
-        <aside class="rounded-[2rem] border border-white/10 bg-slate-950/55 p-5 shadow-2xl shadow-slate-950/30 backdrop-blur-xl sm:p-6">
-          <div class="rounded-[1.5rem] border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-5">
+        <aside class="rounded-[2rem] border border-white/10 bg-slate-950/55 p-4 shadow-2xl shadow-slate-950/30 backdrop-blur-xl sm:p-6">
+          <div class="rounded-[1.5rem] border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-4 sm:p-5">
             <div class="flex items-start justify-between gap-4">
               <div>
                 <p class="text-sm uppercase tracking-[0.35em] text-cyan-200/80">Perfil</p>
-                <h2 class="mt-3 text-2xl font-semibold text-white">Desarrollador con foco en minería de procesos</h2>
+                <h2 class="mt-3 text-xl font-semibold leading-tight text-white sm:text-2xl">Desarrollador con foco en minería de procesos</h2>
               </div>
               <div class="rounded-2xl border border-cyan-300/20 bg-cyan-300/10 px-3 py-2 text-right text-xs text-cyan-100">
                 Madrid<br />España
