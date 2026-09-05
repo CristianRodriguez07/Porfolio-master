@@ -110,11 +110,11 @@ const { description, title } = Astro.props;
     document.querySelectorAll<HTMLElement>("[data-cv-label]").forEach((element) => {
       const label = isEnglish
         ? element.dataset.cvLabel === "english"
-          ? "Mi CV"
+          ? "My CV"
           : "My CV in Spanish"
         : element.dataset.cvLabel === "english"
           ? "Mi CV en Ingles"
-          : "My CV";
+          : "Mi CV";
       const textNode = Array.from(element.childNodes).find(
         (child) => child.nodeType === Node.TEXT_NODE && child.textContent?.trim(),
       );
