@@ -1,135 +1,130 @@
-<header class="sticky top-0 z-50 px-4 pt-4" data-header>
-  <div
-    class="header-shell mx-auto flex w-full max-w-[1120px] items-center justify-between gap-4 rounded-full border border-white/10 bg-slate-950/55 px-4 py-3 shadow-2xl shadow-slate-950/30 backdrop-blur-xl lg:px-6"
-  >
-    <a href="/" class="flex min-w-0 items-center gap-3">
-      <img
-        class="size-11 shrink-0 rounded-full border border-white/20 object-cover shadow-lg shadow-cyan-500/10 sm:size-12"
-        src="/cr-logo.svg"
-        alt="Logo de Cristian Rodríguez"
-      />
-      <div class="min-w-0">
-        <p class="truncate text-xs font-semibold tracking-wide text-white sm:text-sm">Cristian Rodríguez</p>
-        <p class="header-subtitle text-xs text-slate-300">Full Stack Developer</p>
-      </div>
+---
+interface Props { lang?: "es" | "en"; }
+const { lang = "es" } = Astro.props;
+const isEnglish = lang === "en";
+const labels = isEnglish
+  ? { home: "Home", caseStudy: "Case study", about: "About me", experience: "Experience", education: "Education", certifications: "Certifications", skills: "Skills", sections: "Explore portfolio", navigation: "Main navigation", mobile: "Open portfolio navigation", contact: "Contact", download: "Download CV", language: "Versión en español" }
+  : { home: "Inicio", caseStudy: "Caso de éxito", about: "Sobre mí", experience: "Experiencia", education: "Formación", certifications: "Certificaciones", skills: "Competencias", sections: "Explorar portfolio", navigation: "Navegación principal", mobile: "Abrir navegación del portfolio", contact: "Contacto", download: "Descargar CV", language: "English version" };
+const sectionLinks = [
+  ["inicio", labels.home], ["caso-generalitat", labels.caseStudy], ["experiencia", labels.experience],
+  ["sobre-mi", labels.about], ["skills", labels.skills], ["certificaciones", labels.certifications], ["formacion", labels.education],
+];
+const languageHref = isEnglish ? "/" : "/en/";
+const cvHref = isEnglish ? "/Cristian_Rodriguez_Process_Mining_Consultant_EN.pdf" : "/Cristian_Rodriguez_Process_Mining_Consultant_ES.pdf";
+---
+
+<header class="sticky top-0 z-50 px-3 pt-3 sm:px-4 sm:pt-4" data-header>
+  <div class="header-shell relative mx-auto flex w-full max-w-[1240px] items-center gap-3 rounded-[1.4rem] border border-cyan-300/15 bg-slate-950/75 px-3 py-2.5 shadow-2xl shadow-slate-950/40 backdrop-blur-2xl sm:rounded-full sm:px-4 lg:px-5">
+    <a href={isEnglish ? "/en/" : "/"} class="group flex min-w-0 shrink-0 items-center gap-3" aria-label={isEnglish ? "Cristian Rodríguez, home" : "Cristian Rodríguez, inicio"}>
+      <span class="relative shrink-0">
+        <img class="size-10 rounded-full border border-cyan-200/25 object-cover shadow-lg shadow-cyan-500/10 transition group-hover:border-cyan-200/50 sm:size-11" src="/cr-logo.svg" alt="" />
+        <span class="absolute -bottom-0.5 -right-0.5 size-3 rounded-full border-2 border-slate-950 bg-emerald-300 shadow-md shadow-emerald-300/40" aria-hidden="true"></span>
+      </span>
+      <span class="min-w-0">
+        <span class="block truncate text-sm font-semibold tracking-wide text-white">Cristian Rodríguez</span>
+        <span class="header-subtitle block truncate text-[0.7rem] font-medium text-cyan-100/75 sm:text-xs">Process Mining Consultant <span class="hidden sm:inline">· Celonis</span></span>
+      </span>
     </a>
-    <nav class="hidden items-center justify-end gap-3 text-sm font-medium text-slate-200 md:flex" aria-label="Navegación principal">
-      <a class="nav-link rounded-full border border-white/10 bg-white/5 px-3 py-2.5 text-center transition hover:-translate-y-0.5 hover:border-cyan-300/30 hover:bg-cyan-300/10 sm:shrink-0 sm:px-3.5" href="#inicio" data-section="inicio" aria-current="page">Inicio</a>
-      <a class="nav-link rounded-full border border-white/10 bg-white/5 px-3 py-2.5 text-center transition hover:-translate-y-0.5 hover:border-cyan-300/30 hover:bg-cyan-300/10 sm:shrink-0 sm:px-3.5" href="#sobre-mi" data-section="sobre-mi">Sobre mí</a>
-      <a class="nav-link rounded-full border border-white/10 bg-white/5 px-3 py-2.5 text-center transition hover:-translate-y-0.5 hover:border-cyan-300/30 hover:bg-cyan-300/10 sm:shrink-0 sm:px-3.5" href="#experiencia" data-section="experiencia">Experiencia</a>
-      <a class="nav-link rounded-full border border-white/10 bg-white/5 px-3 py-2.5 text-center transition hover:-translate-y-0.5 hover:border-cyan-300/30 hover:bg-cyan-300/10 sm:shrink-0 sm:px-3.5" href="#formacion" data-section="formacion">Formación</a>
-      <a class="nav-link rounded-full border border-white/10 bg-white/5 px-3 py-2.5 text-center transition hover:-translate-y-0.5 hover:border-cyan-300/30 hover:bg-cyan-300/10 sm:shrink-0 sm:px-3.5" href="#certificaciones" data-section="certificaciones">Certificaciones</a>
-      <a class="nav-link rounded-full border border-white/10 bg-gradient-to-r from-cyan-400/20 to-sky-500/20 px-3 py-2.5 text-center text-cyan-50 transition hover:-translate-y-0.5 hover:border-cyan-200/40 hover:from-cyan-400/30 hover:to-sky-500/30 sm:shrink-0 sm:px-3.5" href="#skills" data-section="skills">Skills</a>
+
+    <nav class="mx-auto hidden items-center gap-1 rounded-full border border-white/10 bg-white/[0.045] p-1 text-xs font-medium text-slate-300 lg:flex" aria-label={labels.navigation}>
+      {sectionLinks.slice(0, 6).map(([id, label]) => (
+        <a class="nav-link rounded-full border border-transparent px-3 py-2 transition hover:bg-white/10 hover:text-white" href={`#${id}`} data-section={id}>{label}</a>
+      ))}
     </nav>
+
+    <div class="ml-auto flex shrink-0 items-center gap-2">
+      <a href={languageHref} hreflang={isEnglish ? "es" : "en"} class="inline-flex h-9 min-w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 px-2.5 text-xs font-bold text-cyan-100 transition hover:border-cyan-300/35 hover:bg-cyan-300/10" aria-label={labels.language}>{isEnglish ? "ES" : "EN"}</a>
+      <a href="mailto:cr113022@gmail.com" class="hidden rounded-full bg-cyan-300 px-4 py-2 text-xs font-bold text-slate-950 shadow-lg shadow-cyan-500/15 transition hover:-translate-y-0.5 hover:bg-cyan-200 sm:inline-flex">{labels.contact}</a>
+    </div>
   </div>
 </header>
 
-<div class="mobile-bottom-nav fixed inset-x-0 bottom-0 z-50 px-4 pb-[max(1rem,env(safe-area-inset-bottom))] md:hidden">
-  <label class="sr-only" for="mobile-section-nav">Ir a la sección</label>
-  <div class="mx-auto flex max-w-md items-center gap-3 rounded-2xl border border-white/15 bg-slate-950/90 p-2 shadow-2xl shadow-slate-950/50 backdrop-blur-xl">
-    <span class="pl-2 text-xs font-semibold uppercase tracking-[0.18em] text-cyan-100">Secciones</span>
-    <select id="mobile-section-nav" class="min-w-0 flex-1 appearance-none rounded-xl border border-white/10 bg-white/10 px-3 py-2.5 text-sm font-medium text-white outline-none transition focus:border-cyan-200/60 focus:ring-2 focus:ring-cyan-300/20">
-      <option value="inicio">Inicio</option>
-      <option value="sobre-mi">Sobre mí</option>
-      <option value="experiencia">Experiencia</option>
-      <option value="formacion">Formación</option>
-      <option value="certificaciones">Certificaciones</option>
-      <option value="skills">Skills</option>
-    </select>
+<button type="button" class="fixed inset-x-3 bottom-[max(1rem,env(safe-area-inset-bottom))] z-40 mx-auto flex w-[calc(100%-1.5rem)] max-w-md items-center justify-between rounded-2xl border border-cyan-300/25 bg-slate-950/90 px-4 py-3 text-left shadow-2xl shadow-slate-950/60 backdrop-blur-2xl lg:hidden" aria-label={labels.mobile} data-mobile-trigger aria-expanded="false">
+  <span><span class="block text-[0.62rem] font-semibold uppercase tracking-[0.22em] text-cyan-200/70">{labels.sections}</span><span class="mobile-current mt-0.5 block text-sm font-semibold text-white">{labels.home}</span></span>
+  <span class="flex size-9 items-center justify-center rounded-full bg-cyan-300/10 text-cyan-100"><svg class="size-5" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 6h12M4 10h12M4 14h12" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" /></svg></span>
+</button>
+
+<div class="pointer-events-none fixed inset-0 z-40 bg-slate-950/55 opacity-0 backdrop-blur-sm transition lg:hidden" data-mobile-backdrop></div>
+<aside class="pointer-events-none fixed inset-x-3 bottom-[max(1rem,env(safe-area-inset-bottom))] z-50 mx-auto max-w-md translate-y-5 opacity-0 transition duration-200 lg:hidden" data-mobile-panel aria-hidden="true">
+  <div class="overflow-hidden rounded-3xl border border-cyan-300/20 bg-slate-950/95 shadow-2xl shadow-slate-950/70 backdrop-blur-2xl">
+    <div class="flex items-center justify-between border-b border-white/10 px-5 py-4">
+      <div><p class="text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-cyan-200/70">{labels.sections}</p><p class="mobile-current mt-1 text-sm font-semibold text-white">{labels.home}</p></div>
+      <button type="button" class="flex size-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-slate-300 hover:bg-white/10 hover:text-white" aria-label={isEnglish ? "Close navigation" : "Cerrar navegación"} data-mobile-close><svg class="size-4" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" /></svg></button>
+    </div>
+    <nav class="grid max-h-[55vh] grid-cols-2 gap-1 overflow-y-auto p-2" aria-label={labels.navigation}>
+      {sectionLinks.map(([id, label]) => (
+        <a class="mobile-nav-link rounded-2xl border border-transparent px-4 py-3 text-sm font-medium text-slate-200 transition hover:border-cyan-300/15 hover:bg-cyan-300/10 hover:text-white" href={`#${id}`} data-section={id}>{label}</a>
+      ))}
+    </nav>
+    <div class="grid grid-cols-2 gap-2 border-t border-white/10 p-3">
+      <a href={cvHref} download class="rounded-2xl border border-cyan-300/20 bg-cyan-300/10 px-3 py-3 text-center text-xs font-semibold text-cyan-50">{labels.download}</a>
+      <a href="mailto:cr113022@gmail.com" class="rounded-2xl bg-cyan-300 px-3 py-3 text-center text-xs font-bold text-slate-950">{labels.contact}</a>
+    </div>
   </div>
-</div>
+</aside>
 
 <script>
   const header = document.querySelector<HTMLElement>("[data-header]");
-  const updateHeaderState = () => header?.classList.toggle("is-scrolled", window.scrollY > 24);
+  const panel = document.querySelector<HTMLElement>("[data-mobile-panel]");
+  const backdrop = document.querySelector<HTMLElement>("[data-mobile-backdrop]");
+  const trigger = document.querySelector<HTMLButtonElement>("[data-mobile-trigger]");
+  const closeButton = document.querySelector<HTMLButtonElement>("[data-mobile-close]");
+  const currentLabels = Array.from(document.querySelectorAll<HTMLElement>(".mobile-current"));
+  const navLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>("[data-section]"));
+  let menuOpen = false;
 
-  window.addEventListener("scroll", updateHeaderState, { passive: true });
-  updateHeaderState();
-
-  const navLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>(".nav-link[data-section]"));
-  const mobileSectionNav = document.querySelector<HTMLSelectElement>("#mobile-section-nav");
-  const sections = navLinks
-    .map((link) => document.getElementById(link.dataset.section ?? ""))
-    .filter((section): section is HTMLElement => section !== null);
-
-  const setActiveLink = (sectionId: string) => {
-    navLinks.forEach((link) => {
-      const isActive = link.dataset.section === sectionId;
-      link.classList.toggle("border-cyan-200/40", isActive);
-      link.classList.toggle("bg-cyan-300/15", isActive);
-      link.classList.toggle("text-cyan-50", isActive);
-      if (isActive) {
-        link.setAttribute("aria-current", "page");
-      } else {
-        link.removeAttribute("aria-current");
-      }
-    });
-    if (mobileSectionNav) mobileSectionNav.value = sectionId;
+  const setMenu = (open: boolean) => {
+    menuOpen = open;
+    panel?.classList.toggle("pointer-events-none", !open);
+    panel?.classList.toggle("translate-y-5", !open);
+    panel?.classList.toggle("opacity-0", !open);
+    panel?.setAttribute("aria-hidden", String(!open));
+    backdrop?.classList.toggle("pointer-events-none", !open);
+    backdrop?.classList.toggle("opacity-0", !open);
+    trigger?.setAttribute("aria-expanded", String(open));
+    document.body.classList.toggle("overflow-hidden", open);
   };
 
-  navLinks.forEach((link) => {
-    link.addEventListener("click", (event) => {
-      if (link.dataset.section === "inicio") {
-        event.preventDefault();
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      }
-      const sectionId = link.dataset.section;
-      if (sectionId) setActiveLink(sectionId);
-    });
+  trigger?.addEventListener("click", () => setMenu(!menuOpen));
+  closeButton?.addEventListener("click", () => setMenu(false));
+  backdrop?.addEventListener("click", () => setMenu(false));
+  window.addEventListener("keydown", (event) => { if (event.key === "Escape") setMenu(false); });
+
+  const sectionIds = [...new Set(navLinks.map((link) => link.dataset.section ?? ""))];
+  const sections = sectionIds.map((id) => document.getElementById(id)).filter((section): section is HTMLElement => section !== null);
+  const setActive = (id: string) => navLinks.forEach((link) => {
+    const active = link.dataset.section === id;
+    link.classList.toggle("border-cyan-200/30", active);
+    link.classList.toggle("bg-cyan-300/15", active);
+    link.classList.toggle("text-cyan-50", active);
+    active ? link.setAttribute("aria-current", "page") : link.removeAttribute("aria-current");
+    if (active) currentLabels.forEach((label) => label.textContent = link.textContent?.trim() ?? "");
   });
 
-  mobileSectionNav?.addEventListener("change", () => {
-    const sectionId = mobileSectionNav.value;
-    if (sectionId === "inicio") {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    } else {
-      document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-    setActiveLink(sectionId);
-  });
+  navLinks.forEach((link) => link.addEventListener("click", (event) => {
+    const id = link.dataset.section;
+    if (id === "inicio") { event.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }
+    if (id) setActive(id);
+    setMenu(false);
+  }));
 
-  const sectionObserver = new IntersectionObserver(
-    (entries) => {
-      const visibleSection = entries.find((entry) => entry.isIntersecting);
-      if (visibleSection) setActiveLink(visibleSection.target.id);
-    },
-    { rootMargin: "-25% 0px -60%", threshold: 0 },
-  );
+  const observer = new IntersectionObserver((entries) => {
+    const visible = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+    if (visible) setActive(visible.target.id);
+  }, { rootMargin: "-24% 0px -58%", threshold: [0, 0.15, 0.4] });
+  sections.forEach((section) => observer.observe(section));
 
-  sections.forEach((section) => sectionObserver.observe(section));
+  const updateHeader = () => header?.classList.toggle("is-scrolled", window.scrollY > 24);
+  window.addEventListener("scroll", updateHeader, { passive: true });
+  window.addEventListener("resize", () => { if (window.innerWidth >= 1024 && menuOpen) setMenu(false); }, { passive: true });
+  updateHeader();
 </script>
 
 <style>
-  header {
-    transition: padding-top 180ms ease;
-  }
-
-  .header-shell {
-    transition: gap 180ms ease, padding 180ms ease, border-radius 180ms ease;
-  }
-
-  .is-scrolled {
-    padding-top: 0.5rem;
-  }
-
-  .is-scrolled .header-shell {
-    gap: 0.5rem;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-    border-radius: 1rem;
-  }
-
-  .is-scrolled .header-subtitle {
-    display: none;
-  }
-
-  .is-scrolled .header-shell {
-    border-radius: 9999px;
-  }
-
-  @media (max-width: 767px) {
-    :global(body) {
-      padding-bottom: 5.5rem;
-    }
-  }
+  header { transition: padding-top 180ms ease; }
+  .header-shell { transition: padding 180ms ease, background-color 180ms ease, border-color 180ms ease; }
+  .is-scrolled { padding-top: .45rem; }
+  .is-scrolled .header-shell { border-color: rgba(103, 232, 249, .24); background-color: rgba(2, 6, 23, .9); padding-top: .45rem; padding-bottom: .45rem; }
+  .is-scrolled .header-subtitle { display: none; }
+  @media (max-width: 1023px) { :global(body) { padding-bottom: 5.5rem; } }
 </style>

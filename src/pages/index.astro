@@ -15,262 +15,106 @@ import JavaScriptIcon from "../components/Icons/JavaScript.astro";
 import JavaIcon from "../components/Icons/Java.astro";
 import MySQLIcon from "../components/Icons/MySQL.astro";
 import PythonIcon from "../components/Icons/Python.astro";
-import ReactIcon from "../components/Icons/React.astro";
 import AngularIcon from "../components/Icons/Angular.astro";
 import NodejsIcon from "../components/Icons/Nodejs.astro";
 import SpringIcon from "../components/Icons/Spring.astro";
 import CelonisIcon from "../components/Icons/Celonis.astro";
 import WarpText from "../components/WarpText.astro";
+
+const isEnglish = Astro.url.pathname.startsWith("/en");
+const lang = isEnglish ? "en" : "es";
+const t = isEnglish ? {
+  title: "Cristian Rodríguez | Process Mining Consultant - Celonis",
+  description: "Process Mining Consultant in Madrid specialized in Celonis, PQL, SQL, Python, process analytics, data modeling, KPIs, and automation.",
+  available: "Available for new opportunities", hero: "Process Mining Consultant | Celonis · Data · Automation",
+  intro: "I turn operational data into actionable insights and automation with Celonis, SQL, and Python, connecting business needs with measurable process improvements.",
+  caseCta: "View featured case", cvCta: "Download CV", contactCta: "Contact me", language: "Versión en español",
+  availability: "Madrid · Professional English · Open to new opportunities", contact: "Contact", spanishCv: "CV in Spanish", englishCv: "CV in English",
+  profile: "Profile", specialist: "Celonis Process Mining Consultant", specialization: "Specialization", value: "Value proposition", valueFlow: "Data → insights → action",
+  profileLead: "From data to process improvement.", profileBody: "I connect business requirements, data modeling, and Celonis analysis to turn insights into decisions and automation.", projectTag: "Generalitat de Catalunya · Housing assistance project",
+  years: "Years of experience", bottlenecks: "Bottlenecks", identified: "Identified or resolved", dashboards: "KPIs and dashboards", assets: "Charts, tables, and analysis", intelligence: "Process Intelligence",
+  experience: "Professional experience", about: "About me", about1: "I combine technical Process Mining execution with a consulting mindset: I listen to the client, translate requirements into data models and analyses, and communicate findings in a clear, actionable way.", about2: "My software development background helps me connect data, processes, and automation, working comfortably with both business and technical teams.",
+  skills: "Skills", processData: "Process Mining and data", consulting: "Consulting and value", development: "Software development", certifications: "Celonis certifications", featured: "Most relevant for consulting", moreCerts: "View additional certifications", education: "Education",
+} : {
+  title: "Cristian Rodríguez | Process Mining Consultant - Celonis",
+  description: "Consultor de Process Mining en Madrid especializado en Celonis, PQL, SQL, Python, analítica de procesos, modelado de datos, KPIs y automatización.",
+  available: "Disponible para nuevas oportunidades", hero: "Process Mining Consultant | Celonis · Datos · Automatización",
+  intro: "Transformo datos operativos en insights accionables y automatizaciones con Celonis, SQL y Python, conectando necesidades de negocio con mejoras medibles de los procesos.",
+  caseCta: "Ver caso de éxito", cvCta: "Descargar CV", contactCta: "Contactar", language: "English version",
+  availability: "Madrid · Inglés profesional · Disponible para nuevas oportunidades", contact: "Contacto", spanishCv: "CV en español", englishCv: "CV en inglés",
+  profile: "Perfil", specialist: "Consultor de Process Mining especializado en Celonis", specialization: "Especialización", value: "Propuesta de valor", valueFlow: "Datos → insights → acción",
+  profileLead: "Del dato a la mejora del proceso.", profileBody: "Conecto requisitos de negocio, modelado de datos y análisis en Celonis para convertir insights en decisiones y automatizaciones.", projectTag: "Generalitat de Catalunya · Proyecto de ayudas al alquiler",
+  years: "Años de experiencia", bottlenecks: "Cuellos de botella", identified: "Identificados o resueltos", dashboards: "KPIs y dashboards", assets: "Gráficas, tablas y análisis", intelligence: "Process Intelligence",
+  experience: "Experiencia profesional", about: "Sobre mí", about1: "Combino la ejecución técnica de Process Mining con una visión consultiva: escucho al cliente, traduzco requisitos en modelos de datos y análisis, y comunico los hallazgos de forma clara y accionable.", about2: "Mi experiencia en desarrollo de software me permite conectar datos, procesos y automatización, colaborando con soltura con equipos técnicos y de negocio.",
+  skills: "Competencias", processData: "Process Mining y datos", consulting: "Consultoría y valor", development: "Desarrollo de software", certifications: "Certificaciones Celonis", featured: "Más relevantes para consultoría", moreCerts: "Ver certificaciones adicionales", education: "Formación académica",
+};
+
+const processSkills = ["Celonis", "PQL", "PyCelonis", "Celonis Studio", "Action Flows", "Data Modeling", "Process Analysis", "KPI Design", "SQL", "Python"];
+const consultingSkills = isEnglish ? ["Requirements Gathering", "Client Communication", "Bottleneck Analysis", "Process Optimization", "Value Realization", "POCs & Demos"] : ["Toma de requisitos", "Comunicación con cliente", "Análisis de cuellos de botella", "Optimización de procesos", "Value Realization", "POCs y demos"];
+const topCerts = isEnglish ? [
+  ["Qualified Technical Expert", "Technical implementation and platform configuration."],
+  ["Qualified Solution Creation Expert", "Design of actionable Process Intelligence solutions."],
+  ["Qualified Value Realization Expert", "Identification and realization of measurable business value."],
+] : [
+  ["Qualified Technical Expert", "Implementación técnica y configuración de la plataforma."],
+  ["Qualified Solution Creation Expert", "Diseño de soluciones accionables de Process Intelligence."],
+  ["Qualified Value Realization Expert", "Identificación y materialización de valor de negocio medible."],
+];
+const otherCerts = ["Qualified Value Assessment Expert", "Qualified to Build Action Flows", "Qualified to Create and Deliver Demos"];
 ---
 
-<Layout
-  title="Portfolio de Cristian Rodríguez - Desarrollador y Programador de software"
-  description="Contrata a Cristian Rodríguez, Desarrollador de software Full Stack, para tu próximo proyecto."
->
+<Layout title={t.title} description={t.description} lang={lang}>
   <main id="inicio" class="relative scroll-mt-28 overflow-hidden pb-10">
     <SectionContainer class="pt-8 md:pt-14 lg:pt-20">
       <div class="grid items-center gap-8 lg:grid-cols-[1.15fr_0.85fr]">
         <div class="space-y-6">
-          <div class="inline-flex items-center gap-3 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-200 shadow-lg shadow-slate-950/20 backdrop-blur-xl">
-            <Badge>Disponible para trabajar</Badge>
-            <span class="hidden sm:inline text-slate-300">Full Stack Developer</span>
-          </div>
-          <WarpText text="Desarrollador Full Stack / Especializado en Process Mining." />
-          <p class="max-w-2xl text-lg leading-8 text-slate-300 sm:text-xl">
-            Soy Cristian Rodríguez, especialista en Process Mining con Celonis en Madrid. Transformo datos operativos con Celonis, SQL y Python en insights y automatizaciones que mejoran la eficiencia de los procesos.
-          </p>
+          <div class="inline-flex items-center gap-3 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-200 shadow-lg shadow-slate-950/20 backdrop-blur-xl"><Badge>{t.available}</Badge><span class="hidden sm:inline text-slate-300">Process Mining · Celonis</span></div>
+          <WarpText text={t.hero} />
+          <p class="max-w-2xl text-lg leading-8 text-slate-300 sm:text-xl">{t.intro}</p>
           <div class="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-            <a href="#experiencia" class="w-full rounded-full bg-cyan-400 px-5 py-3 text-center text-sm font-semibold text-slate-950 transition hover:-translate-y-0.5 hover:bg-cyan-300 sm:w-auto">
-              Ver experiencia
-            </a>
-            <a href="mailto:cr113022@gmail.com" class="w-full rounded-full border border-white/10 bg-white/5 px-5 py-3 text-center text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:border-cyan-300/30 hover:bg-white/10 sm:w-auto">
-              Hablemos
-            </a>
-            <button
-              type="button"
-              data-language-toggle
-              aria-label="Traducir al inglés"
-              class="w-full rounded-full border border-cyan-300/30 bg-cyan-300/10 px-5 py-3 text-center text-sm font-semibold text-cyan-50 transition hover:-translate-y-0.5 hover:border-cyan-200/50 hover:bg-cyan-300/20 sm:w-auto"
-            >
-              English Version
-            </button>
+            <a href="#caso-generalitat" class="w-full rounded-full bg-cyan-400 px-5 py-3 text-center text-sm font-semibold text-slate-950 transition hover:-translate-y-0.5 hover:bg-cyan-300 sm:w-auto">{t.caseCta}</a>
+            <a href={isEnglish ? "/Cristian_Rodriguez_Process_Mining_Consultant_EN.pdf" : "/Cristian_Rodriguez_Process_Mining_Consultant_ES.pdf"} download class="w-full rounded-full border border-cyan-300/30 bg-cyan-300/10 px-5 py-3 text-center text-sm font-semibold text-cyan-50 transition hover:-translate-y-0.5 hover:bg-cyan-300/20 sm:w-auto">{t.cvCta}</a>
+            <a href="mailto:cr113022@gmail.com" class="w-full rounded-full border border-white/10 bg-white/5 px-5 py-3 text-center text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:border-cyan-300/30 hover:bg-white/10 sm:w-auto">{t.contactCta}</a>
+            <a href={isEnglish ? "/" : "/en/"} hreflang={isEnglish ? "es" : "en"} class="w-full rounded-full border border-white/10 px-5 py-3 text-center text-sm font-semibold text-slate-200 transition hover:-translate-y-0.5 hover:bg-white/10 sm:w-auto">{t.language}</a>
           </div>
-          <nav class="flex max-w-full flex-wrap gap-3 overflow-hidden pt-2">
-            <SocialPill href="https://www.linkedin.com/in/cristian-alcides-rodr%C3%ADguez-cervantes-a3b705250/">
-              <LinkedInIcon class="size-4 md:size-6" />
-              LinkedIn
-            </SocialPill>
-            <SocialPill href="https://github.com/CristianRodriguez07">
-              <GitHubIcon class="size-4 md:size-6" />
-              GitHub
-            </SocialPill>
-            <SocialPill href="mailto:cr113022@gmail.com">
-              <GmailIcon class="size-4 md:size-6" />
-              Contacto
-            </SocialPill>
-            <SocialPill href="/Cristian_Rodriguez_CV.pdf" download="Cristian_Rodriguez_CV.pdf" data-cv-label="spanish">
-              <CodeIcon class="size-4 md:size-6" />
-              Mi CV
-            </SocialPill>
-            <SocialPill href="/CV Cristian Rodriguez English.pdf" download="CV Cristian Rodriguez English.pdf" data-cv-label="english">
-              <CodeIcon class="size-4 md:size-6" />
-              Mi CV en Ingles
-            </SocialPill>
+          <p class="flex items-center gap-2 text-sm text-cyan-100/75"><span class="h-2 w-2 rounded-full bg-emerald-300 shadow-lg shadow-emerald-300/50"></span>{t.availability}</p>
+          <nav class="flex max-w-full flex-wrap gap-3 overflow-hidden pt-1" aria-label={isEnglish ? "Professional links" : "Enlaces profesionales"}>
+            <SocialPill href="https://www.linkedin.com/in/cristian-alcides-rodr%C3%ADguez-cervantes-a3b705250/"><LinkedInIcon class="size-4 md:size-6" />LinkedIn</SocialPill>
+            <SocialPill href="https://github.com/CristianRodriguez07"><GitHubIcon class="size-4 md:size-6" />GitHub</SocialPill>
+            <SocialPill href="mailto:cr113022@gmail.com"><GmailIcon class="size-4 md:size-6" />{t.contact}</SocialPill>
+            <SocialPill href="/Cristian_Rodriguez_Process_Mining_Consultant_ES.pdf" download="Cristian_Rodriguez_Process_Mining_Consultant_ES.pdf"><CodeIcon class="size-4 md:size-6" />{t.spanishCv}</SocialPill>
+            <SocialPill href="/Cristian_Rodriguez_Process_Mining_Consultant_EN.pdf" download="Cristian_Rodriguez_Process_Mining_Consultant_EN.pdf"><CodeIcon class="size-4 md:size-6" />{t.englishCv}</SocialPill>
           </nav>
         </div>
 
-        <aside class="rounded-[2rem] border border-white/10 bg-slate-950/55 p-4 shadow-2xl shadow-slate-950/30 backdrop-blur-xl sm:p-6">
-          <div class="rounded-[1.5rem] border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-4 sm:p-5">
-            <div class="flex items-start justify-between gap-4">
-              <div>
-                <p class="text-sm uppercase tracking-[0.35em] text-cyan-200/80">Perfil</p>
-                <h2 class="mt-3 text-xl font-semibold leading-tight text-white sm:text-2xl">Desarrollador con foco en minería de procesos</h2>
-              </div>
-              <div class="rounded-2xl border border-cyan-300/20 bg-cyan-300/10 px-3 py-2 text-right text-xs text-cyan-100">
-                Madrid<br />España
-              </div>
-            </div>
-
-            <div class="mt-6 grid gap-3 sm:grid-cols-2">
-              <div class="rounded-2xl border border-white/10 bg-slate-900/60 p-4">
-                <p class="text-xs uppercase tracking-[0.3em] text-slate-400">Stack</p>
-                <p class="mt-2 text-base font-semibold text-white">Celonis · SQL · Python</p>
-              </div>
-              <div class="rounded-2xl border border-white/10 bg-slate-900/60 p-4">
-                <p class="text-xs uppercase tracking-[0.3em] text-slate-400">Foco</p>
-                <p class="mt-2 text-lg font-semibold text-white">UI limpia y rendimiento</p>
-              </div>
-            </div>
-
-            <div class="mt-6 rounded-2xl border border-white/10 bg-white/5 p-4">
-              <p class="text-sm text-slate-300">
-                Automatizo procesos para mejorar eficiencia y reducir errores.
-              </p>
-            </div>
+        <aside class="rounded-[2rem] border border-cyan-300/20 bg-slate-950/55 p-4 shadow-2xl shadow-cyan-950/30 backdrop-blur-xl sm:p-6">
+          <div class="relative overflow-hidden rounded-[1.5rem] border border-white/10 bg-gradient-to-br from-cyan-300/10 via-white/5 to-slate-950/20 p-4 sm:p-5">
+            <div class="pointer-events-none absolute -right-16 -top-16 size-40 rounded-full bg-cyan-300/10 blur-3xl" aria-hidden="true"></div>
+            <div class="flex items-start justify-between gap-4"><div class="relative"><p class="text-sm uppercase tracking-[0.35em] text-cyan-200/80">{t.profile}</p><h2 class="mt-3 text-xl font-semibold leading-tight text-white sm:text-2xl">{t.specialist}</h2></div><div class="relative shrink-0 rounded-2xl border border-cyan-300/20 bg-cyan-300/10 px-3 py-2 text-right text-xs font-medium text-cyan-100">Madrid<br />{isEnglish ? "Spain" : "España"}</div></div>
+            <div class="relative mt-6 grid gap-3 sm:grid-cols-2"><div class="rounded-2xl border border-cyan-300/15 bg-slate-900/65 p-4"><p class="text-xs uppercase tracking-[0.3em] text-cyan-200/70">{t.specialization}</p><p class="mt-2 text-base font-semibold text-white">Celonis · PQL · SQL · Python</p></div><div class="rounded-2xl border border-cyan-300/15 bg-slate-900/65 p-4"><p class="text-xs uppercase tracking-[0.3em] text-cyan-200/70">{t.value}</p><p class="mt-2 text-base font-semibold text-white">{t.valueFlow}</p></div></div>
+            <div class="relative mt-4 rounded-2xl border border-cyan-300/25 bg-cyan-400/10 p-4"><p class="text-base font-semibold leading-6 text-white">{t.profileLead}</p><p class="mt-2 text-sm leading-6 text-slate-300">{t.profileBody}</p></div>
+            <div class="relative mt-3 flex items-center gap-2 text-xs font-medium text-cyan-100/80"><span class="h-2 w-2 rounded-full bg-cyan-300 shadow-lg shadow-cyan-300/50"></span>{t.projectTag}</div>
           </div>
         </aside>
       </div>
     </SectionContainer>
 
-    <SectionContainer class="pt-0 md:pt-0">
-      <div class="grid gap-px overflow-hidden rounded-2xl border border-cyan-300/20 bg-cyan-300/15 sm:grid-cols-2 lg:grid-cols-4">
-        <div class="bg-slate-950/65 px-4 py-4 backdrop-blur-xl sm:px-5">
-          <p class="text-3xl font-bold tracking-tight text-cyan-100">2.5+</p>
-          <p class="mt-1 text-sm font-semibold text-white">Años de experiencia</p>
-          <p class="mt-1 text-xs uppercase tracking-[0.16em] text-cyan-200/75">Process Mining · Celonis</p>
-        </div>
-        <div class="bg-slate-950/65 px-4 py-4 backdrop-blur-xl sm:px-5">
-          <p class="text-2xl font-bold tracking-tight text-cyan-100">Celonis</p>
-          <p class="mt-1 text-sm font-semibold text-white">Process Intelligence</p>
-          <p class="mt-1 text-xs uppercase tracking-[0.16em] text-cyan-200/75">PQL · Studio · Action Flows</p>
-        </div>
-        <div class="bg-slate-950/65 px-4 py-4 backdrop-blur-xl sm:px-5">
-          <p class="text-2xl font-bold tracking-tight text-cyan-100">POCs</p>
-          <p class="mt-1 text-sm font-semibold text-white">Soluciones validadas</p>
-          <p class="mt-1 text-xs uppercase tracking-[0.16em] text-cyan-200/75">Demos · análisis · automatización</p>
-        </div>
-        <div class="bg-slate-950/65 px-4 py-4 backdrop-blur-xl sm:px-5">
-          <p class="text-2xl font-bold tracking-tight text-cyan-100">SQL · Python</p>
-          <p class="mt-1 text-sm font-semibold text-white">Stack de datos</p>
-          <p class="mt-1 text-xs uppercase tracking-[0.16em] text-cyan-200/75">Modelado · transformación · eficiencia</p>
-        </div>
-      </div>
-    </SectionContainer>
+    <SectionContainer class="pt-0 md:pt-0"><div class="grid gap-px overflow-hidden rounded-2xl border border-cyan-300/20 bg-cyan-300/15 sm:grid-cols-2 lg:grid-cols-4">
+      {[["2.5+", t.years, "Process Mining · Celonis"], ["12+", t.bottlenecks, t.identified], ["70+", t.dashboards, t.assets], ["Celonis", t.intelligence, "PQL · SQL · Python"]].map(([value, label, detail]) => <div class="bg-slate-950/65 px-4 py-4 backdrop-blur-xl sm:px-5"><p class="text-3xl font-bold tracking-tight text-cyan-100">{value}</p><p class="mt-1 text-sm font-semibold text-white">{label}</p><p class="mt-1 text-xs uppercase tracking-[0.16em] text-cyan-200/75">{detail}</p></div>)}
+    </div></SectionContainer>
 
-    <SectionContainer id="sobre-mi">
-      <div class="rounded-[2rem] border border-white/10 bg-slate-950/45 p-6 shadow-2xl shadow-slate-950/20 backdrop-blur-xl md:p-8">
-        <h2 class="mb-5 flex items-center gap-x-3 text-2xl font-semibold text-white">
-          <RobotIcon class="size-8" />
-          Sobre mí
-        </h2>
-        <p class="mb-4 max-w-4xl text-lg leading-8 text-slate-300 text-pretty">
-          Soy un joven desarrollador con más de 2 años de experiencia en minería de procesos con Celonis. Trabajo con SQL y Python para automatizar y optimizar procesos, transformando datos en mejoras medibles de eficiencia y reduciendo errores operativos.
-        </p>
-        <p class="max-w-4xl text-lg leading-8 text-cyan-100/80 text-pretty">
-          Mi objetivo es contribuir de manera significativa a la innovación tecnológica, aplicando mis conocimientos y desarrollando habilidades que me permitan ser parte activa de los cambios y avances que están transformando el futuro.
-        </p>
-      </div>
-    </SectionContainer>
+    <SectionContainer id="experiencia"><div class="rounded-[2rem] border border-cyan-300/15 bg-slate-950/45 p-6 shadow-2xl shadow-slate-950/20 backdrop-blur-xl md:p-8"><h2 class="mb-5 flex items-center gap-x-3 text-2xl font-semibold text-white"><CodeIcon class="size-8" />{t.experience}</h2><Experience lang={lang} /></div></SectionContainer>
 
-    <SectionContainer id="experiencia">
-      <div class="rounded-[2rem] border border-white/10 bg-slate-950/45 p-6 shadow-2xl shadow-slate-950/20 backdrop-blur-xl md:p-8">
-        <h2 class="mb-5 flex items-center gap-x-3 text-2xl font-semibold text-white">
-          <CodeIcon class="size-8" />
-          Experiencia laboral
-        </h2>
-        <Experience />
-      </div>
-    </SectionContainer>
+    <SectionContainer id="sobre-mi"><div class="rounded-[2rem] border border-white/10 bg-slate-950/45 p-6 shadow-2xl shadow-slate-950/20 backdrop-blur-xl md:p-8"><h2 class="mb-5 flex items-center gap-x-3 text-2xl font-semibold text-white"><RobotIcon class="size-8" />{t.about}</h2><p class="mb-4 max-w-4xl text-lg leading-8 text-slate-300 text-pretty">{t.about1}</p><p class="max-w-4xl text-lg leading-8 text-cyan-100/80 text-pretty">{t.about2}</p></div></SectionContainer>
 
-    <SectionContainer id="formacion">
-      <div class="rounded-[2rem] border border-white/10 bg-slate-950/45 p-6 shadow-2xl shadow-slate-950/20 backdrop-blur-xl md:p-8">
-        <h2 class="mb-5 flex items-center gap-x-3 text-2xl font-semibold text-white">
-          <CodeIcon class="size-8" />
-          Formación académica
-        </h2>
-        <Estudios />
-      </div>
-    </SectionContainer>
+    <SectionContainer id="skills"><div class="rounded-[2rem] border border-white/10 bg-slate-950/45 p-6 shadow-2xl shadow-slate-950/20 backdrop-blur-xl md:p-8"><h2 class="mb-6 flex items-center gap-x-3 text-2xl font-semibold text-white"><BoltIcon class="size-8" />{t.skills}</h2><div class="grid gap-5 lg:grid-cols-3">
+      <article class="rounded-2xl border border-cyan-300/20 bg-cyan-400/5 p-5"><h3 class="text-lg font-semibold text-cyan-100">{t.processData}</h3><div class="mt-4 flex flex-wrap gap-2">{processSkills.map((skill) => <span class="rounded-full border border-cyan-300/20 bg-cyan-300/10 px-3 py-2 text-sm text-slate-100">{skill}</span>)}</div></article>
+      <article class="rounded-2xl border border-cyan-300/20 bg-cyan-400/5 p-5"><h3 class="text-lg font-semibold text-cyan-100">{t.consulting}</h3><div class="mt-4 flex flex-wrap gap-2">{consultingSkills.map((skill) => <span class="rounded-full border border-cyan-300/20 bg-cyan-300/10 px-3 py-2 text-sm text-slate-100">{skill}</span>)}</div></article>
+      <article class="rounded-2xl border border-white/10 bg-white/5 p-5"><h3 class="text-lg font-semibold text-cyan-100">{t.development}</h3><div class="mt-4 flex flex-wrap gap-3"><SocialPill><SpringIcon class="size-5" />Spring Boot</SocialPill><SocialPill><AngularIcon class="size-5" />Angular</SocialPill><SocialPill><NodejsIcon class="size-5" />Node.js</SocialPill><SocialPill><JavaScriptIcon class="size-5" />JavaScript</SocialPill><SocialPill><JavaIcon class="size-5" />Java</SocialPill><SocialPill><MySQLIcon class="size-5" />MySQL</SocialPill><SocialPill><PythonIcon class="size-5" />Python</SocialPill></div></article>
+    </div></div></SectionContainer>
 
-    <SectionContainer id="certificaciones">
-      <div class="rounded-[2rem] border border-white/10 bg-slate-950/45 p-6 shadow-2xl shadow-slate-950/20 backdrop-blur-xl md:p-8">
-        <h2 class="mb-5 flex items-center gap-x-3 text-2xl font-semibold text-white">
-          <CelonisIcon class="size-9" />
-          Certificaciones
-        </h2>
+    <SectionContainer id="certificaciones"><div class="rounded-[2rem] border border-white/10 bg-slate-950/45 p-6 shadow-2xl shadow-slate-950/20 backdrop-blur-xl md:p-8"><div class="mb-5 flex items-end justify-between gap-4"><h2 class="flex items-center gap-x-3 text-2xl font-semibold text-white"><CelonisIcon class="size-9" />{t.certifications}</h2><p class="hidden text-sm text-cyan-100/70 sm:block">{t.featured}</p></div><div class="grid gap-4 md:grid-cols-3">{topCerts.map(([name, description]) => <article class="rounded-2xl border border-cyan-400/25 bg-gradient-to-br from-cyan-500/10 to-transparent p-5"><p class="text-xs uppercase tracking-[0.28em] text-cyan-200/80">Celonis</p><h3 class="mt-3 text-lg font-semibold text-white">{name}</h3><p class="mt-2 text-sm leading-6 text-slate-300">{description}</p></article>)}</div><details class="group mt-4 rounded-2xl border border-white/10 bg-white/5"><summary class="flex cursor-pointer list-none items-center justify-between px-5 py-4 text-sm font-semibold text-cyan-100"><span>{t.moreCerts}</span><span class="text-lg transition group-open:rotate-45">+</span></summary><div class="flex flex-wrap gap-2 border-t border-white/10 px-5 py-4">{otherCerts.map((cert) => <span class="rounded-full border border-white/10 bg-slate-900/60 px-3 py-2 text-sm text-slate-200">{cert}</span>)}</div></details></div></SectionContainer>
 
-        <div class="grid gap-4 md:grid-cols-2">
-          <article class="rounded-2xl border border-cyan-400/20 bg-cyan-500/5 p-5">
-            <p class="text-xs uppercase tracking-[0.28em] text-cyan-200/80">Celonis</p>
-            <h3 class="mt-3 text-xl font-semibold text-white">Qualified Value Realization Expert</h3>
-            <p class="mt-2 text-sm leading-6 text-slate-300">Identificación y materialización de valor de negocio.</p>
-          </article>
-
-          <article class="rounded-2xl border border-cyan-400/20 bg-cyan-500/5 p-5">
-            <p class="text-xs uppercase tracking-[0.28em] text-cyan-200/80">Celonis</p>
-            <h3 class="mt-3 text-xl font-semibold text-white">Qualified Value Assessment Expert</h3>
-            <p class="mt-2 text-sm leading-6 text-slate-300">Evaluación de procesos y priorización de oportunidades.</p>
-          </article>
-
-          <article class="rounded-2xl border border-cyan-400/20 bg-cyan-500/5 p-5">
-            <p class="text-xs uppercase tracking-[0.28em] text-cyan-200/80">Celonis</p>
-            <h3 class="mt-3 text-xl font-semibold text-white">Qualified Technical Expert</h3>
-            <p class="mt-2 text-sm leading-6 text-slate-300">Implementación técnica y configuración de la plataforma.</p>
-          </article>
-
-          <article class="rounded-2xl border border-cyan-400/20 bg-cyan-500/5 p-5">
-            <p class="text-xs uppercase tracking-[0.28em] text-cyan-200/80">Celonis</p>
-            <h3 class="mt-3 text-xl font-semibold text-white">Qualified Solution Creation Expert</h3>
-            <p class="mt-2 text-sm leading-6 text-slate-300">Diseño de soluciones de Process Intelligence.</p>
-          </article>
-
-          <article class="rounded-2xl border border-cyan-400/20 bg-cyan-500/5 p-5">
-            <p class="text-xs uppercase tracking-[0.28em] text-cyan-200/80">Celonis</p>
-            <h3 class="mt-3 text-xl font-semibold text-white">Qualified to Build Action Flows</h3>
-            <p class="mt-2 text-sm leading-6 text-slate-300">Automatización de tareas y flujos basados en insights.</p>
-          </article>
-
-          <article class="rounded-2xl border border-cyan-400/20 bg-cyan-500/5 p-5">
-            <p class="text-xs uppercase tracking-[0.28em] text-cyan-200/80">Celonis</p>
-            <h3 class="mt-3 text-xl font-semibold text-white">Qualified to Create and Deliver Demos</h3>
-            <p class="mt-2 text-sm leading-6 text-slate-300">Creación y presentación de demos orientadas a negocio.</p>
-          </article>
-        </div>
-      </div>
-    </SectionContainer>
-
-    <SectionContainer id="skills">
-      <div class="rounded-[2rem] border border-white/10 bg-slate-950/45 p-6 shadow-2xl shadow-slate-950/20 backdrop-blur-xl md:p-8">
-        <h2 class="mb-5 flex items-center gap-x-3 text-2xl font-semibold text-white">
-          <BoltIcon class="size-8" />
-          Skills
-        </h2>
-        <div class="space-y-6">
-          <div>
-            <h3 class="mb-3 text-lg font-semibold text-cyan-100">Process Mining y datos</h3>
-            <nav class="flex flex-wrap gap-3" aria-label="Skills de Process Mining y datos">
-            <SocialPill>
-              <CelonisIcon class="size-5 md:size-7" />
-              Celonis
-            </SocialPill>
-              <SocialPill>
-                <MySQLIcon class="size-4 md:size-6" />
-                SQL
-              </SocialPill>
-              <SocialPill>
-                <PythonIcon class="size-4 md:size-6" />
-                Python
-              </SocialPill>
-            </nav>
-          </div>
-
-          <div>
-            <h3 class="mb-3 text-lg font-semibold text-cyan-100">Desarrollador</h3>
-            <nav class="flex flex-wrap gap-3" aria-label="Skills de desarrollo">
-              <SocialPill>
-                <SpringIcon class="size-4 md:size-6" />
-                Spring Boot
-              </SocialPill>
-              <SocialPill>
-                <AngularIcon class="size-4 md:size-6" />
-                Angular
-              </SocialPill>
-              <SocialPill>
-                <NodejsIcon class="size-4 md:size-6" />
-                Node.js
-              </SocialPill>
-              <SocialPill>
-                <JavaScriptIcon class="size-4 md:size-6" />
-                JavaScript
-              </SocialPill>
-              <SocialPill>
-                <JavaIcon class="size-4 md:size-6" />
-                Java
-              </SocialPill>
-            </nav>
-          </div>
-        </div>
-      </div>
-    </SectionContainer>
+    <SectionContainer id="formacion"><div class="rounded-[2rem] border border-white/10 bg-slate-950/45 p-6 shadow-2xl shadow-slate-950/20 backdrop-blur-xl md:p-8"><h2 class="mb-5 flex items-center gap-x-3 text-2xl font-semibold text-white"><CodeIcon class="size-8" />{t.education}</h2><Estudios lang={lang} /></div></SectionContainer>
   </main>
 </Layout>

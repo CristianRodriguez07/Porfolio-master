@@ -1,41 +1,13 @@
 ---
 import ExperienceItem from "./ExperienceItem.astro";
-
-const EXPERIENCE = [
-  {
-    date: "2025-Actualidad",
-    title: "Process Mining con Celonis - Inetum",
-    description:
-      "Me especializo en la optimización y analítica de procesos con Celonis, SQL y Python. Trabajo desde la preparación de datos hasta la creación de análisis y soluciones orientadas a mejorar la eficiencia operativa.",
-    project: {
-      name: "Ayudas al Alquiler - Generalitat Catalunya",
-      problem: "Unificar y analizar datos del proceso de ayudas al alquiler para detectar retrasos, inconsistencias y cuellos de botella.",
-      contribution: "Contacto directo con el cliente, toma de requisitos, extracción, transformación y modelado de datos, definición de indicadores y creación de dashboards en Celonis Studio.",
-      technologies: "Celonis EMS / Process Intelligence Platform, Celonis Studio, PQL, PyCelonis, SQL y Python.",
-      result: "Una visión más clara del proceso y de sus puntos críticos, facilitando la priorización de mejoras y posibles automatizaciones.",
-    },
-  },
-
-  {
-    date: "2023-2025",
-    title: "Desarrollador de software - Getronics",
-    description:
-      "Durante esta etapa combiné el desarrollo y mantenimiento de aplicaciones con el análisis y la optimización de procesos, colaborando con perfiles técnicos y de negocio en distintos proyectos.",
-    highlights: [
-      "Desarrollé y mantuve aplicaciones, conectando necesidades de negocio con soluciones de software y análisis de procesos.",
-      "Participé en varias POCs (pruebas de concepto), aportando ideas y soluciones técnicas, evaluando alternativas, preparando demos y validando su viabilidad antes de pasar a fases de desarrollo.",
-      "Tecnologías trabajadas: Spring Boot, Angular, Node.js, Celonis, SQL y Python.",
-    ],
-  },
+interface Props { lang?: "es" | "en"; }
+const { lang = "es" } = Astro.props;
+const EXPERIENCE = lang === "en" ? [
+  { date: "2025-Present", title: "Process Mining Consultant - Inetum", description: "I specialize in process optimization and analytics with Celonis, SQL, and Python, covering the journey from data preparation to actionable analysis and automation.", project: { name: "Housing Assistance - Generalitat de Catalunya", problem: "Unify and analyze housing assistance process data to reveal delays, inconsistencies, and bottlenecks.", contribution: "Direct client communication, requirements gathering, data extraction, transformation and modeling, KPI definition, and dashboard development in Celonis Studio.", technologies: "Celonis EMS / Process Intelligence Platform, Celonis Studio, PQL, PyCelonis, SQL, and Python.", result: "Approximately 30 KPIs and visualizations delivered and more than 2 bottlenecks resolved, providing a clearer view of critical process points." } },
+  { date: "2023-2025", title: "Software Developer & Process Mining - Getronics", description: "I combined software development with process analysis and optimization, contributing to several POCs alongside technical and business stakeholders.", details: { work: "Designed and developed multiple POCs, translating business requirements into technical proposals, analyses, and demos. I also developed and maintained applications, connecting process insights with software and automation solutions.", impact: "Identified 5+ bottlenecks and delivered approximately 40 KPIs, dashboards, charts, and tables across the POCs.", technologies: "Celonis, SQL, Python, Spring Boot, Angular, and Node.js." } },
+] : [
+  { date: "2025-Actualidad", title: "Process Mining Consultant - Inetum", description: "Me especializo en la optimización y analítica de procesos con Celonis, SQL y Python, desde la preparación de datos hasta la creación de análisis accionables y automatizaciones.", project: { name: "Ayudas al Alquiler - Generalitat de Catalunya", problem: "Unificar y analizar los datos del proceso de ayudas al alquiler para detectar retrasos, inconsistencias y cuellos de botella.", contribution: "Comunicación directa con el cliente, toma de requisitos, extracción, transformación y modelado de datos, definición de indicadores y creación de dashboards en Celonis Studio.", technologies: "Celonis EMS / Process Intelligence Platform, Celonis Studio, PQL, PyCelonis, SQL y Python.", result: "Alrededor de 30 KPIs y visualizaciones desarrollados y más de 2 cuellos de botella resueltos, aportando una visión más clara de los puntos críticos del proceso." } },
+  { date: "2023-2025", title: "Desarrollo de software y Process Mining - Getronics", description: "Combiné el desarrollo de software con el análisis y la optimización de procesos, participando en varias POCs junto a perfiles técnicos y de negocio.", details: { work: "Diseñé y desarrollé múltiples POCs, traduciendo requisitos de negocio en propuestas técnicas, análisis y demos. También desarrollé y mantuve aplicaciones, conectando los insights de proceso con soluciones de software y automatización.", impact: "Más de 5 cuellos de botella identificados y alrededor de 40 KPIs, dashboards, gráficas y tablas desarrollados entre las distintas POCs.", technologies: "Celonis, SQL, Python, Spring Boot, Angular y Node.js." } },
 ];
 ---
-
-<ol class="relative border-s border-white/15 pl-4">
-  {
-    EXPERIENCE.map((experiencie) => (
-      <li class="mb-10 ms-2">
-        <ExperienceItem {...experiencie} />
-      </li>
-    ))
-  }
-</ol>
+<ol class="relative border-s border-white/15 pl-4">{EXPERIENCE.map((experience) => <li class="mb-10 ms-2"><ExperienceItem {...experience} lang={lang} /></li>)}</ol>

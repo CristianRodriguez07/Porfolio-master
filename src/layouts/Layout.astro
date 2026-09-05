@@ -2,310 +2,71 @@
 import Footer from "../components/Footer.astro";
 import GhostFibers from "../components/GhostFibers.astro";
 import Header from "../components/Header.astro";
-
 import "@fontsource-variable/onest";
 
-interface Props {
-  title: string;
-  description: string;
-}
-
-const { description, title } = Astro.props;
+interface Props { title: string; description: string; lang?: "es" | "en"; }
+const { description, title, lang = "es" } = Astro.props;
+const canonicalUrl = new URL(lang === "en" ? "/en/" : "/", "https://crisrcportfolio.netlify.app");
+const socialImage = new URL("/og-process-mining.svg", canonicalUrl);
+const structuredData = {
+  "@context": "https://schema.org", "@type": "Person", name: "Cristian Rodríguez",
+  jobTitle: "Process Mining Consultant", address: { "@type": "PostalAddress", addressLocality: "Madrid", addressCountry: "ES" },
+  email: "mailto:cr113022@gmail.com", telephone: "+34 675 648 371", url: canonicalUrl.href,
+  sameAs: ["https://www.linkedin.com/in/cristian-alcides-rodr%C3%ADguez-cervantes-a3b705250/", "https://github.com/CristianRodriguez07"],
+  knowsAbout: ["Process Mining", "Celonis", "PQL", "SQL", "Python", "Process Intelligence"],
+};
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang={lang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width" />
-    <link
-      rel="icon"
-      type="image/png"
-      href="/cr-logo.svg"
-    />
+    <meta name="theme-color" content="#050816" />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="alternate" hreflang="es" href="https://crisrcportfolio.netlify.app/" />
+    <link rel="alternate" hreflang="en" href="https://crisrcportfolio.netlify.app/en/" />
+    <link rel="alternate" hreflang="x-default" href="https://crisrcportfolio.netlify.app/" />
+    <link rel="icon" type="image/svg+xml" href="/cr-logo.svg" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={socialImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Cristian Rodríguez - Process Mining Consultant" />
+    <meta property="og:locale" content={lang === "en" ? "en_US" : "es_ES"} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImage} />
     <meta name="generator" content={Astro.generator} />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)} />
     <title>{title}</title>
   </head>
   <body>
     <canvas class="ghost-fibers" aria-hidden="true"></canvas>
     <GhostFibers />
-    <Header />
+    <Header lang={lang} />
     <slot />
-    <Footer />
+    <Footer lang={lang} />
   </body>
 </html>
-<script>
-  const translations: Record<string, string> = {
-    "Disponible para trabajar": "Available for work",
-    "Desarrollador Full Stack / Especializado en Process Mining.": "Full Stack Developer / Specialized in Process Mining.",
-    "Soy Cristian Rodríguez, desarrollador full stack en Madrid. Me enfoco en construir productos claros, funcionales y con una identidad visual más cuidada.": "I am Cristian Rodríguez, a full stack developer based in Madrid. I focus on building clear, functional products with a thoughtful visual identity.",
-    "Soy Cristian Rodríguez, especialista en Process Mining con Celonis en Madrid. Transformo datos operativos con Celonis, SQL y Python en insights y automatizaciones que mejoran la eficiencia de los procesos.": "I am Cristian Rodríguez, a Process Mining specialist with Celonis based in Madrid. I transform operational data with Celonis, SQL, and Python into insights and automations that improve process efficiency.",
-    "Ver experiencia": "View experience",
-    "Hablemos": "Let's talk",
-    "Perfil": "Profile",
-    "Desarrollador con foco en minería de procesos": "Developer focused on process mining",
-    "España": "Spain",
-    "Foco": "Focus",
-    "UI limpia y rendimiento": "Clean UI and performance",
-    "Automatizo procesos para mejorar eficiencia y reducir errores.": "I automate processes to improve efficiency and reduce errors.",
-    "Años en Process Mining": "Years in Process Mining",
-    "Años de experiencia": "Years of experience",
-    "Process Mining · Celonis": "Process Mining · Celonis",
-    "Process Intelligence": "Process Intelligence",
-    "PQL · Studio · Action Flows": "PQL · Studio · Action Flows",
-    "Soluciones validadas": "Validated solutions",
-    "Demos · análisis · automatización": "Demos · analytics · automation",
-    "Stack de datos": "Data stack",
-    "Modelado · transformación · eficiencia": "Modeling · transformation · efficiency",
-    "Análisis y automatización": "Analytics and automation",
-    "Ideas y soluciones técnicas": "Technical ideas and solutions",
-    "Datos y eficiencia operativa": "Data and operational efficiency",
-    "Sobre mí": "About me",
-    "Soy un joven desarrollador con más de 2 años de experiencia en minería de procesos con Celonis. Trabajo con SQL y Python para automatizar y optimizar procesos, transformando datos en mejoras medibles de eficiencia y reduciendo errores operativos.": "I am a young developer with more than 2 years of experience in process mining with Celonis. I use SQL and Python to automate and optimize processes, turning data into measurable efficiency gains and reducing operational errors.",
-    "Mi objetivo es contribuir de manera significativa a la innovación tecnológica, aplicando mis conocimientos y desarrollando habilidades que me permitan ser parte activa de los cambios y avances que están transformando el futuro.": "My goal is to make a meaningful contribution to technological innovation by applying my knowledge and developing skills that allow me to play an active role in the changes shaping the future.",
-    "Mi experiencia": "My experience",
-    "Experiencia laboral": "Work experience",
-    "Process Mining con Celonis - Inetum": "Process Mining with Celonis - Inetum",
-    "Proyecto destacado": "Featured project",
-    "Nombre del proyecto": "Project name",
-    "Problema que resolvía": "Problem addressed",
-    "Mi contribución": "My contribution",
-    "Tecnologías utilizadas": "Technologies used",
-    "Resultado conseguido": "Outcome",
-    "Ayudas al Alquiler - Generalitat Catalunya": "Housing Assistance - Generalitat Catalunya",
-    "Unificar y analizar datos del proceso de ayudas al alquiler para detectar retrasos, inconsistencias y cuellos de botella.": "Unify and analyze housing assistance process data to detect delays, inconsistencies, and bottlenecks.",
-    "Contacto directo con el cliente, toma de requisitos, modelado de datos, definición de indicadores y creación de dashboards en Celonis Studio.": "Direct client communication, requirements gathering, data modeling, KPI definition, and Celonis Studio dashboard creation.",
-    "Contacto directo con el cliente, toma de requisitos, extracción, transformación y modelado de datos, definición de indicadores y creación de dashboards en Celonis Studio.": "Direct client communication, requirements gathering, data extraction, transformation and modeling, KPI definition, and Celonis Studio dashboard creation.",
-    "Celonis EMS / Process Intelligence Platform, Studio, PQL, PyCelonis, SQL y Python.": "Celonis EMS / Process Intelligence Platform, Studio, PQL, PyCelonis, SQL, and Python.",
-    "Celonis EMS / Process Intelligence Platform, Celonis Studio, PQL, PyCelonis, SQL y Python.": "Celonis EMS / Process Intelligence Platform, Celonis Studio, PQL, PyCelonis, SQL, and Python.",
-    "Una visión más clara del proceso y de sus puntos críticos, facilitando la priorización de mejoras y posibles automatizaciones.": "A clearer view of the process and its critical points, supporting improvement prioritization and potential automation.",
-    "Me especializo en la optimización y analítica de procesos con Celonis, SQL y Python. Trabajo desde la preparación de datos hasta la creación de análisis y soluciones orientadas a mejorar la eficiencia operativa.": "I specialize in process optimization and analytics using Celonis, SQL, and Python. My work covers everything from data preparation to creating analyses and solutions focused on improving operational efficiency.",
-    "En Inetum participo en un proyecto para la Generalitat de Catalunya orientado a automatizar y mejorar el análisis del proceso de ayudas al alquiler. Mantengo comunicación directa con el cliente para recoger requisitos y alinear la solución con sus necesidades; realizo la extracción, transformación y modelado de datos, defino indicadores de seguimiento y desarrollo dashboards que permiten visualizar el estado del proceso, detectar retrasos, cuellos de botella e inconsistencias, y priorizar mejoras y automatizaciones. Utilizo Celonis EMS / Process Intelligence Platform, Celonis Studio, PQL, PyCelonis, SQL y Python.": "At Inetum, I contribute to a project for the Generalitat de Catalunya focused on automating and improving the analysis of the housing assistance process. I maintain direct communication with the client to gather requirements and align the solution with their needs; I extract, transform, and model data, define monitoring KPIs, and develop dashboards that show process status, identify delays, bottlenecks, and inconsistencies, and help prioritize improvements and automation. I use Celonis EMS / Process Intelligence Platform, Celonis Studio, PQL, PyCelonis, SQL, and Python.",
-    "Proyecto para la Generalitat de Catalunya centrado en automatizar y mejorar el análisis de datos de ayudas al alquiler. Mantuve una comunicación directa con el cliente para comprender sus necesidades, recoger sus requisitos y alinear la solución con la visión esperada. Participé en la extracción, transformación y modelado de datos, definí indicadores de seguimiento y desarrollé dashboards en Celonis Studio para analizar el estado del proceso, localizar cuellos de botella e identificar inconsistencias y oportunidades de mejora.": "Project for the Generalitat de Catalunya focused on automating and improving the analysis of housing assistance data. I maintained direct communication with the client to understand their needs, gather requirements, and align the solution with their expected vision. I contributed to data extraction, transformation, and modeling, defined monitoring indicators, and developed Celonis Studio dashboards to analyze process status, locate bottlenecks, and identify inconsistencies and improvement opportunities.",
-    "Además, aporté ideas y soluciones en varias POCs (pruebas de concepto), evaluando su viabilidad y trasladando los resultados a posibles automatizaciones y mejoras aplicables a procesos reales.": "I also contributed ideas and solutions to several POCs (proofs of concept), assessing their feasibility and translating the results into potential automations and improvements applicable to real processes.",
-    "Desarrollador de software - Getronics": "Software Developer - Getronics",
-    "Compaginé el desarrollo y mantenimiento de aplicaciones con SpringBoot, Angular y Node.js con el análisis y la optimización de procesos mediante Celonis, SQL y Python. Esta combinación me permitió colaborar con perfiles técnicos y de negocio en distintos proyectos.": "I combined application development and maintenance with SpringBoot, Angular, and Node.js with process analysis and optimization using Celonis, SQL, and Python. This combination allowed me to collaborate with both technical and business profiles across different projects.",
-    "Durante esta etapa combiné el desarrollo y mantenimiento de aplicaciones con el análisis y la optimización de procesos, colaborando con perfiles técnicos y de negocio en distintos proyectos.": "During this period, I combined application development and maintenance with process analysis and optimization, collaborating with technical and business stakeholders across different projects.",
-    "Participé en varias POCs (pruebas de concepto), aportando ideas y soluciones técnicas, evaluando alternativas, preparando demos y validando su viabilidad antes de pasar a fases de desarrollo.": "I participated in several POCs (proofs of concept), contributing technical ideas and solutions, evaluating alternatives, preparing demos, and validating their feasibility before moving into development phases.",
-    "En estas iniciativas colaboré en la identificación de necesidades, la definición de propuestas y la conexión entre los análisis de procesos y posibles soluciones de software.": "In these initiatives, I helped identify needs, define proposals, and connect process analyses with potential software solutions.",
-    "Desarrollé y mantuve aplicaciones, conectando necesidades de negocio con soluciones de software y análisis de procesos.": "I developed and maintained applications, connecting business needs with software solutions and process analysis.",
-    "Tecnologías trabajadas: Spring Boot, Angular, Node.js, Celonis, SQL y Python.": "Technologies used: Spring Boot, Angular, Node.js, Celonis, SQL, and Python.",
-    "Formación": "Education",
-    "Formación académica": "Academic background",
-    "Certificaciones": "Certifications",
-    "Identificación y materialización de valor de negocio.": "Identifying and realizing business value.",
-    "Evaluación de procesos y priorización de oportunidades.": "Process assessment and opportunity prioritization.",
-    "Implementación técnica y configuración de la plataforma.": "Technical implementation and platform configuration.",
-    "Diseño de soluciones de Process Intelligence.": "Designing Process Intelligence solutions.",
-    "Automatización de tareas y flujos basados en insights.": "Automating tasks and insight-based flows.",
-    "Creación y presentación de demos orientadas a negocio.": "Creating and presenting business-focused demos.",
-    "Process Mining y datos": "Process Mining and data",
-    "Desarrollador": "Development",
-    "Skills de Process Mining y datos": "Process Mining and data skills",
-    "Skills de desarrollo": "Development skills",
-    "Postgrado en Desarrollo de Aplicaciones web // Blockchain - Cesur Plaza Elíptica": "Postgraduate Degree in Web Application Development // Blockchain - Cesur Plaza Elíptica",
-    "He completado un Postgrado en Desarrollo de Aplicaciones web // Blockchain, donde aprendí a desarrollar aplicaciones web y a trabajar con tecnologías emergentes como Blockchain. Este postgrado me permitió profundizar en mis conocimientos de desarrollo y adquirir nuevas habilidades que me permiten afrontar nuevos retos en el ámbito de la tecnología.": "I completed a postgraduate degree in Web Application Development // Blockchain, where I learned to build web applications and work with emerging technologies such as Blockchain. This program deepened my development knowledge and gave me new skills to take on challenges in technology.",
-    "Grado Superior en Desarrollo de Aplicaciones Multiplataforma - Cesur Plaza Elíptica": "Higher Degree in Multiplatform Application Development - Cesur Plaza Elíptica",
-    "Durante mis estudios en Desarrollo de Aplicaciones Multiplataforma (DAM), adquirí una sólida base en el diseño y desarrollo de software para diversos dispositivos. Aprendí a programar en lenguajes como Java, Kotlin, HTML y CSS, enfocándome en el desarrollo de aplicaciones en entornos Android. También me especialicé en bases de datos, trabajando con MySQL para la gestión y manipulación de datos. Además, durante un breve periodo, aprendí los fundamentos de Python, ampliando mis capacidades en el ámbito del desarrollo.": "During my studies in Multiplatform Application Development, I built a strong foundation in software design and development for different devices. I learned Java, Kotlin, HTML, and CSS, focusing on Android application development. I also specialized in databases with MySQL and learned the fundamentals of Python, expanding my development skills.",
-    "Ciencias tecnológicas | Bachillerato - IES GRAN CAPITÁN": "Technology Sciences | High School - IES GRAN CAPITÁN",
-    "Estudios de Bachillerato en la modalidad de Ciencias Tecnológicas en el IES GRAN CAPITÁN, centrado en matemáticas, física, tecnología y fundamentos de programación.": "High school studies in Technology Sciences at IES GRAN CAPITÁN, focused on mathematics, physics, technology, and programming fundamentals.",
-    "Inicio": "Home",
-    "Experiencia": "Experience",
-    "Contacto": "Contact",
-    "Portfolio en evolución.": "Portfolio in progress.",
-    ". Portfolio en evolución.": ". Portfolio in progress.",
-    "Foto de Cristian Rodríguez": "Photo of Cristian Rodríguez",
-    "Navegación principal": "Main navigation",
-    "Ir a la sección": "Go to section",
-    "Secciones": "Sections",
-    "2025-Actualidad": "2025-Present",
-  };
 
-  const reverseTranslations = Object.fromEntries(
-    Object.entries(translations).map(([spanish, english]) => [english, spanish]),
-  );
-  const languageToggle = document.querySelector<HTMLButtonElement>("[data-language-toggle]");
-  let isEnglish = false;
-
-  const translatePage = () => {
-    const dictionary = isEnglish ? translations : reverseTranslations;
-    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
-    let node = walker.nextNode();
-
-    while (node) {
-      const text = node.textContent ?? "";
-      const trimmedText = text.trim();
-      const translatedText = dictionary[trimmedText];
-      if (translatedText) node.textContent = text.replace(trimmedText, translatedText);
-      node = walker.nextNode();
-    }
-
-    document.querySelectorAll<HTMLElement>("[data-warp-text][data-text]").forEach((element) => {
-      const text = element.dataset.text ?? "";
-      const translatedText = dictionary[text];
-      if (translatedText) element.dataset.text = translatedText;
-    });
-
-    document.querySelectorAll<HTMLElement>("[aria-label]").forEach((element) => {
-      const label = element.getAttribute("aria-label") ?? "";
-      const translatedLabel = dictionary[label];
-      if (translatedLabel) element.setAttribute("aria-label", translatedLabel);
-    });
-    document.querySelectorAll<HTMLElement>("[alt]").forEach((element) => {
-      const alt = element.getAttribute("alt") ?? "";
-      const translatedAlt = dictionary[alt];
-      if (translatedAlt) element.setAttribute("alt", translatedAlt);
-    });
-    document.querySelectorAll<HTMLElement>("[data-cv-label]").forEach((element) => {
-      const label = isEnglish
-        ? element.dataset.cvLabel === "english"
-          ? "My CV"
-          : "My CV in Spanish"
-        : element.dataset.cvLabel === "english"
-          ? "Mi CV en Ingles"
-          : "Mi CV";
-      const textNode = Array.from(element.childNodes).find(
-        (child) => child.nodeType === Node.TEXT_NODE && child.textContent?.trim(),
-      );
-      if (textNode) textNode.textContent = `\n              ${label}\n            `;
-    });
-
-    const description = document.querySelector<HTMLMetaElement>('meta[name="description"]');
-    const spanishDescription = "Contrata a Cristian Rodríguez, Desarrollador de software Full Stack, para tu próximo proyecto.";
-    const englishDescription = "Hire Cristian Rodríguez, a Full Stack software developer, for your next project.";
-    if (description) description.content = isEnglish ? englishDescription : spanishDescription;
-
-    document.title = isEnglish
-      ? "Cristian Rodríguez's Portfolio - Full Stack Developer"
-      : "Portfolio de Cristian Rodríguez - Desarrollador y Programador de software";
-    document.documentElement.lang = isEnglish ? "en" : "es";
-    if (languageToggle) {
-      languageToggle.textContent = isEnglish ? "Spanish Version" : "English Version";
-      languageToggle.setAttribute("aria-label", isEnglish ? "Cambiar a español" : "Traducir al inglés");
-    }
-  };
-
-  languageToggle?.addEventListener("click", () => {
-    isEnglish = !isEnglish;
-    translatePage();
-  });
-</script>
 <style is:global>
-  :root {
-    color-scheme: dark;
-    --page-bg: #050816;
-    --page-bg-2: #0f172a;
-    --page-bg-3: #111827;
-    --surface: rgba(15, 23, 42, 0.72);
-    --surface-strong: rgba(15, 23, 42, 0.9);
-    --surface-border: rgba(148, 163, 184, 0.18);
-    --accent: #7dd3fc;
-    --accent-strong: #38bdf8;
-    --text-main: #eef2ff;
-    --text-soft: #cbd5e1;
-  }
-  html {
-    font-family: "Onest Variable", sans-serif;
-    scroll-behavior: smooth;
-    background: var(--page-bg);
-  }
-  body {
-    margin: 0;
-    color: var(--text-main);
-    background: linear-gradient(180deg, var(--page-bg) 0%, var(--page-bg-2) 48%, var(--page-bg-3) 100%);
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    position: relative;
-    overflow-x: hidden;
-    background-attachment: fixed;
-  }
-
-  body > main,
-  body > footer {
-    position: relative;
-    z-index: 1;
-  }
-
-  canvas.ghost-fibers {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    opacity: 0.98;
-  }
-
-  body::before,
-  body::after {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: -1;
-  }
-
-  body::before {
-    background:
-      linear-gradient(116deg, transparent 0 32%, rgba(56, 189, 248, 0.12) 42%, transparent 54%),
-      linear-gradient(244deg, transparent 0 46%, rgba(45, 212, 191, 0.1) 56%, transparent 67%),
-      repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 72px),
-      repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.025) 0 1px, transparent 1px 72px);
-    background-size: 180% 180%, 180% 180%, 72px 72px, 72px 72px;
-    mask-image: linear-gradient(180deg, black, transparent 92%);
-    opacity: 0.5;
-    animation: ambient-drift 18s ease-in-out infinite alternate;
-  }
-
-  body::after {
-    background:
-      conic-gradient(from 210deg at 50% -10%, transparent 0deg, rgba(14, 165, 233, 0.08) 55deg, transparent 115deg),
-      linear-gradient(180deg, transparent 0%, rgba(2, 6, 23, 0.18) 60%, rgba(2, 6, 23, 0.52) 100%);
-    mix-blend-mode: screen;
-    opacity: 0.8;
-    animation: ambient-pulse 12s ease-in-out infinite alternate;
-  }
-
-  @keyframes ambient-drift {
-    0% {
-      background-position: 0% 0%, 100% 20%, 0 0, 0 0;
-    }
-    100% {
-      background-position: 28% 18%, 72% 44%, 36px 28px, 0 36px;
-    }
-  }
-
-  @keyframes ambient-pulse {
-    0% {
-      opacity: 0.55;
-      transform: scale(1);
-    }
-    100% {
-      opacity: 0.9;
-      transform: scale(1.04);
-    }
-  }
-
-  a {
-    color: inherit;
-    text-decoration: none;
-  }
-
-  ::selection {
-    background: rgba(56, 189, 248, 0.3);
-    color: white;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    html {
-      scroll-behavior: auto;
-    }
-
-    body::before,
-    body::after {
-      animation: none;
-    }
-  }
+  :root { color-scheme: dark; --page-bg: #050816; --page-bg-2: #0f172a; --page-bg-3: #111827; --text-main: #eef2ff; }
+  html { font-family: "Onest Variable", sans-serif; scroll-behavior: smooth; background: var(--page-bg); }
+  body { margin: 0; color: var(--text-main); background: linear-gradient(180deg, var(--page-bg) 0%, var(--page-bg-2) 48%, var(--page-bg-3) 100%); display: flex; flex-direction: column; min-height: 100vh; position: relative; overflow-x: hidden; background-attachment: fixed; }
+  body > main, body > footer { position: relative; z-index: 1; }
+  canvas.ghost-fibers { position: fixed; inset: 0; z-index: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0.98; }
+  body::before, body::after { content: ""; position: fixed; inset: 0; pointer-events: none; z-index: -1; }
+  body::before { background: linear-gradient(116deg, transparent 0 32%, rgba(56,189,248,.12) 42%, transparent 54%), linear-gradient(244deg, transparent 0 46%, rgba(45,212,191,.1) 56%, transparent 67%), repeating-linear-gradient(90deg, rgba(255,255,255,.035) 0 1px, transparent 1px 72px), repeating-linear-gradient(0deg, rgba(255,255,255,.025) 0 1px, transparent 1px 72px); background-size: 180% 180%, 180% 180%, 72px 72px, 72px 72px; mask-image: linear-gradient(180deg, black, transparent 92%); opacity: .5; animation: ambient-drift 18s ease-in-out infinite alternate; }
+  body::after { background: conic-gradient(from 210deg at 50% -10%, transparent 0deg, rgba(14,165,233,.08) 55deg, transparent 115deg), linear-gradient(180deg, transparent 0%, rgba(2,6,23,.18) 60%, rgba(2,6,23,.52) 100%); mix-blend-mode: screen; opacity: .8; animation: ambient-pulse 12s ease-in-out infinite alternate; }
+  @keyframes ambient-drift { 0% { background-position: 0% 0%, 100% 20%, 0 0, 0 0; } 100% { background-position: 28% 18%, 72% 44%, 36px 28px, 0 36px; } }
+  @keyframes ambient-pulse { 0% { opacity: .55; transform: scale(1); } 100% { opacity: .9; transform: scale(1.04); } }
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: rgba(56,189,248,.3); color: white; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } body::before, body::after { animation: none; } }
 </style>

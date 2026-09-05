@@ -4,6 +4,7 @@
   const canvas = document.querySelector<HTMLCanvasElement>(".ghost-fibers");
 
   if (canvas) {
+    try {
     const renderer = new Renderer({
       alpha: true,
       antialias: false,
@@ -93,6 +94,10 @@
       cancelAnimationFrame(frame);
       window.removeEventListener("resize", resize);
     }, { once: true });
+    } catch {
+      canvas.remove();
+      document.documentElement.classList.add("webgl-unavailable");
+    }
   }
 </script>
 

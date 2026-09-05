@@ -1,36 +1,15 @@
 ---
 import ExperienceItem from "./ExperienceItem.astro";
-
-const STUDIES = [
-  {
-    date: "2024-2026",
-    title:
-      "Postgrado en Desarrollo de Aplicaciones web // Blockchain - Cesur Plaza Elíptica",
-    description:
-      "He completado un Postgrado en Desarrollo de Aplicaciones web // Blockchain, donde aprendí a desarrollar aplicaciones web y a trabajar con tecnologías emergentes como Blockchain. Este postgrado me permitió profundizar en mis conocimientos de desarrollo y adquirir nuevas habilidades que me permiten afrontar nuevos retos en el ámbito de la tecnología.",
-  },
-  {
-    date: "2022-2024",
-    title:
-      "Grado Superior en Desarrollo de Aplicaciones Multiplataforma - Cesur Plaza Elíptica",
-    description:
-      "Durante mis estudios en Desarrollo de Aplicaciones Multiplataforma (DAM), adquirí una sólida base en el diseño y desarrollo de software para diversos dispositivos. Aprendí a programar en lenguajes como Java, Kotlin, HTML y CSS, enfocándome en el desarrollo de aplicaciones en entornos Android. También me especialicé en bases de datos, trabajando con MySQL para la gestión y manipulación de datos. Además, durante un breve periodo, aprendí los fundamentos de Python, ampliando mis capacidades en el ámbito del desarrollo.",
-  },
-  {
-    date: "2020-2022",
-    title: "Ciencias tecnológicas | Bachillerato - IES GRAN CAPITÁN",
-    description:
-      "Estudios de Bachillerato en la modalidad de Ciencias Tecnológicas en el IES GRAN CAPITÁN, centrado en matemáticas, física, tecnología y fundamentos de programación.",
-  },
+interface Props { lang?: "es" | "en"; }
+const { lang = "es" } = Astro.props;
+const STUDIES = lang === "en" ? [
+  { date: "2024-2026", title: "Postgraduate Program in Web Application Development and Blockchain - Cesur Plaza Elíptica", description: "Completed postgraduate training in web application development and emerging technologies, expanding my software engineering background." },
+  { date: "2022-2024", title: "Higher Degree in Multiplatform Application Development - Cesur Plaza Elíptica", description: "Built a foundation in software development, databases, Java, Kotlin, HTML, CSS, MySQL, and Python." },
+  { date: "2020-2022", title: "High School Diploma, Technology Sciences - IES Gran Capitán", description: "Focused on mathematics, physics, technology, and programming fundamentals." },
+] : [
+  { date: "2024-2026", title: "Postgrado en Desarrollo de Aplicaciones Web y Blockchain - Cesur Plaza Elíptica", description: "Formación completada en desarrollo de aplicaciones web y tecnologías emergentes, ampliando mi base de ingeniería de software." },
+  { date: "2022-2024", title: "Grado Superior en Desarrollo de Aplicaciones Multiplataforma - Cesur Plaza Elíptica", description: "Base sólida en desarrollo de software, bases de datos, Java, Kotlin, HTML, CSS, MySQL y Python." },
+  { date: "2020-2022", title: "Bachillerato de Ciencias Tecnológicas - IES Gran Capitán", description: "Formación centrada en matemáticas, física, tecnología y fundamentos de programación." },
 ];
 ---
-
-<ol class="relative border-s border-white/15 pl-4">
-  {
-    STUDIES.map((study) => (
-      <li class="mb-10 ms-2">
-        <ExperienceItem {...study} />
-      </li>
-    ))
-  }
-</ol>
+<ol class="relative border-s border-white/15 pl-4">{STUDIES.map((study) => <li class="mb-10 ms-2"><ExperienceItem {...study} lang={lang} /></li>)}</ol>

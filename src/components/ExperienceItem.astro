@@ -1,93 +1,30 @@
 ---
 export interface Props {
-  title: string;
-  description: string;
-  highlights?: string[];
-  project?: {
-    name: string;
-    problem: string;
-    contribution: string;
-    technologies: string;
-    result: string;
-  };
-  link?: string;
-  date: string;
+  title: string; description: string; highlights?: string[]; date: string; lang?: "es" | "en";
+  project?: { name: string; problem: string; contribution: string; technologies: string; result: string; };
+  details?: { work: string; impact: string; technologies: string; };
 }
-const { title, description, highlights = [], project, link, date } = Astro.props;
+const { title, description, highlights = [], project, details, date, lang = "es" } = Astro.props;
+const labels = lang === "en"
+  ? { featured: "Featured case study", name: "Project", problem: "Challenge", contribution: "Work delivered", technologies: "Technology", result: "Impact", work: "POCs and work delivered" }
+  : { featured: "Caso de éxito", name: "Proyecto", problem: "Reto", contribution: "Trabajo realizado", technologies: "Tecnologías", result: "Impacto", work: "POCs y trabajo realizado" };
 ---
-
-<div
-  class="absolute -start-6 mt-1.5 h-3 w-3 rounded-full border border-cyan-200/40 bg-cyan-300 shadow-lg shadow-cyan-500/20"
->
-</div>
-<time class="mb-1 text-sm font-medium leading-none text-cyan-100/80">
-  {date}
-</time>
-<h3 class="mt-2 text-lg font-semibold text-white">
-  {title}
-</h3>
-<p class="mb-4 text-base font-normal leading-7 text-slate-300 text-pretty">
-  {description}
-</p>
-{highlights.length > 0 && (
-  <ul class="mb-4 space-y-2 text-base leading-7 text-cyan-100/90">
-    {highlights.map((highlight) => (
-      <li class="flex gap-2 rounded-xl border border-cyan-300/20 bg-cyan-400/10 px-3 py-2 text-pretty">
-        <span class="mt-3 h-1.5 w-1.5 shrink-0 rounded-full bg-cyan-300" aria-hidden="true"></span>
-        <span>{highlight}</span>
-      </li>
-    ))}
-  </ul>
-)}
-{project && (
-  <div class="mb-4 rounded-2xl border border-cyan-300/25 bg-cyan-400/10 p-4 sm:p-5">
-    <p class="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-200">Proyecto destacado</p>
-    <dl class="mt-4 grid gap-3 text-sm leading-6 sm:grid-cols-2">
-      <div>
-        <dt class="font-semibold text-cyan-100">Nombre del proyecto</dt>
-        <dd class="mt-1 text-slate-200">{project.name}</dd>
-      </div>
-      <div>
-        <dt class="font-semibold text-cyan-100">Problema que resolvía</dt>
-        <dd class="mt-1 text-slate-200">{project.problem}</dd>
-      </div>
-      <div>
-        <dt class="font-semibold text-cyan-100">Mi contribución</dt>
-        <dd class="mt-1 text-slate-200">{project.contribution}</dd>
-      </div>
-      <div>
-        <dt class="font-semibold text-cyan-100">Tecnologías utilizadas</dt>
-        <dd class="mt-1 text-slate-200">{project.technologies}</dd>
-      </div>
-      <div class="sm:col-span-2">
-        <dt class="font-semibold text-cyan-100">Resultado conseguido</dt>
-        <dd class="mt-1 text-slate-200">{project.result}</dd>
-      </div>
-    </dl>
-  </div>
-)}
-{
-  link && (
-    <a
-      href={link}
-      class="inline-flex items-center rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-white transition hover:-translate-y-0.5 hover:border-cyan-300/30 hover:bg-white/10"
-    >
-      Learn more{" "}
-      <svg
-        class="ms-2 h-3 w-3 rtl:rotate-180"
-        aria-hidden="true"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 14 10"
-      >
-        <path
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M1 5h12m0 0L9 1m4 4L9 9"
-        />
-      </svg>
-    </a>
-  )
-}
+<div class="absolute -start-6 mt-1.5 h-3 w-3 rounded-full border border-cyan-200/40 bg-cyan-300 shadow-lg shadow-cyan-500/20"></div>
+<time class="mb-1 text-sm font-medium leading-none text-cyan-100/80">{date}</time>
+<h3 class="mt-2 text-lg font-semibold text-white">{title}</h3>
+<p class="mb-4 text-base font-normal leading-7 text-slate-300 text-pretty">{description}</p>
+{highlights.length > 0 && <ul class="mb-4 space-y-2 text-base leading-7 text-cyan-100/90">{highlights.map((highlight) => <li class="flex gap-2 rounded-xl border border-cyan-300/20 bg-cyan-400/10 px-3 py-2 text-pretty"><span class="mt-3 h-1.5 w-1.5 shrink-0 rounded-full bg-cyan-300" aria-hidden="true"></span><span>{highlight}</span></li>)}</ul>}
+{project && <article id="caso-generalitat" class="mb-4 scroll-mt-28 overflow-hidden rounded-2xl border border-cyan-300/30 bg-gradient-to-br from-cyan-400/15 to-slate-950/30">
+  <div class="border-b border-white/10 px-4 py-4 sm:px-5"><p class="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-200">{labels.featured}</p><h4 class="mt-2 text-xl font-semibold text-white">{project.name}</h4></div>
+  <dl class="grid gap-px bg-white/10 text-sm leading-6 sm:grid-cols-2">
+    <div class="bg-slate-950/65 p-4 sm:p-5"><dt class="font-semibold text-cyan-100">{labels.problem}</dt><dd class="mt-1 text-slate-200">{project.problem}</dd></div>
+    <div class="bg-slate-950/65 p-4 sm:p-5"><dt class="font-semibold text-cyan-100">{labels.contribution}</dt><dd class="mt-1 text-slate-200">{project.contribution}</dd></div>
+    <div class="bg-slate-950/65 p-4 sm:p-5"><dt class="font-semibold text-cyan-100">{labels.technologies}</dt><dd class="mt-1 text-slate-200">{project.technologies}</dd></div>
+    <div class="bg-cyan-950/55 p-4 sm:p-5"><dt class="font-semibold text-cyan-100">{labels.result}</dt><dd class="mt-1 text-white">{project.result}</dd></div>
+  </dl>
+</article>}
+{details && <dl class="mb-4 grid gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 text-sm leading-6 sm:grid-cols-2">
+  <div class="bg-slate-950/55 p-4 sm:p-5"><dt class="font-semibold text-slate-100">{labels.work}</dt><dd class="mt-1 text-slate-300">{details.work}</dd></div>
+  <div class="bg-slate-950/55 p-4 sm:p-5"><dt class="font-semibold text-cyan-100/90">{labels.result}</dt><dd class="mt-1 text-slate-200">{details.impact}</dd></div>
+  <div class="bg-slate-950/55 p-4 sm:col-span-2 sm:p-5"><dt class="font-semibold text-slate-100">{labels.technologies}</dt><dd class="mt-1 text-slate-300">{details.technologies}</dd></div>
+</dl>}
