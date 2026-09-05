@@ -5,128 +5,261 @@ interface Props {
 }
 
 const { class: className = "", text } = Astro.props;
-const words = text.split(" ");
 ---
 
-<div
-  class={`warp-text max-w-3xl text-3xl font-semibold leading-tight tracking-tight text-white sm:text-5xl lg:text-7xl ${className}`}
-  role="heading"
-  aria-level="1"
+<h1
+  class={`warp-text relative isolate min-h-[8.5rem] w-full max-w-3xl overflow-hidden text-3xl font-semibold leading-tight tracking-tight text-white sm:min-h-[9rem] sm:text-5xl lg:min-h-[14rem] lg:text-7xl ${className}`}
   data-warp-text
+  data-text={text}
+  aria-label={text}
 >
-  {words.map((word, wordIndex) => (
-    <span class="warp-word" aria-hidden="true">
-      {[...word].map((character, characterIndex) => (
-        <span
-          class="warp-character"
-          style={`--character-index: ${wordIndex * 10 + characterIndex};`}
-        >{character}</span>
-      ))}
-    </span>
-  ))}
-  <span class="sr-only">{text}</span>
-</div>
+  <span class="warp-fallback" aria-hidden="true">{text}</span>
+</h1>
 
 <script>
-  const warpTexts = document.querySelectorAll<HTMLElement>("[data-warp-text]");
+  import { Mesh, Program, Renderer, Texture, Triangle } from "ogl";
 
-  warpTexts.forEach((warpText) => {
-    const updatePointer = (event: PointerEvent) => {
-      const bounds = warpText.getBoundingClientRect();
-      const pointerX = ((event.clientX - bounds.left) / bounds.width - 0.5) * 2;
-      const pointerY = ((event.clientY - bounds.top) / bounds.height - 0.5) * 2;
-      warpText.style.setProperty("--pointer-x", pointerX.toFixed(3));
-      warpText.style.setProperty("--pointer-y", pointerY.toFixed(3));
+  const vertex = `#version 300 es
+    in vec2 position;
+    in vec2 uv;
+    out vec2 vUv;
+    void main() {
+      vUv = uv;
+      gl_Position = vec4(position, 0.0, 1.0);
+    }
+  `;
+
+  const fragment = `#version 300 es
+    precision highp float;
+    uniform sampler2D uTextTexture;
+    uniform vec2 uResolution;
+    uniform vec2 uPointer;
+    uniform float uPointerActive;
+    uniform float uTime;
+    uniform float uWarpStrength;
+    uniform float uWarpScale;
+    uniform float uSpeed;
+    uniform float uPointerInfluence;
+    uniform float uPointerStrength;
+    uniform float uRefraction;
+    uniform float uRipple;
+    uniform float uMotion;
+    in vec2 vUv;
+    out vec4 fragColor;
+
+    float hash(vec2 p) {
+      p = fract(p * vec2(123.34, 456.21));
+      p += dot(p, p + 45.32);
+      return fract(p.x * p.y);
+    }
+
+    float noise(vec2 p) {
+      vec2 i = floor(p);
+      vec2 f = fract(p);
+      vec2 u = f * f * (3.0 - 2.0 * f);
+      return mix(mix(hash(i), hash(i + vec2(1.0, 0.0)), u.x), mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), u.x), u.y);
+    }
+
+    float fbm(vec2 p) {
+      float value = 0.0;
+      float amplitude = 0.5;
+      for (int i = 0; i < 4; i++) {
+        value += amplitude * noise(p);
+        p *= 2.02;
+        amplitude *= 0.5;
+      }
+      return value;
+    }
+
+    vec4 sampleText(vec2 uv) {
+      if (uv.x < 0.0 || uv.x > 1.0 || uv.y < 0.0 || uv.y > 1.0) return vec4(0.0);
+      return texture(uTextTexture, uv);
+    }
+
+    void main() {
+      vec2 uv = vUv;
+      float aspect = uResolution.x / max(uResolution.y, 1.0);
+      float time = uTime * uSpeed;
+      float scale = max(uWarpScale, 0.001);
+      vec2 drift = vec2(time * 0.055, -time * 0.045);
+      float n1 = fbm(uv * scale * 3.1 + drift);
+      float n2 = fbm((uv + 19.17) * scale * 3.4 - drift.yx);
+      vec2 ambient = (vec2(n1, n2) - 0.5) * uWarpStrength * 0.045 * uMotion;
+      vec2 pointerDelta = uv - uPointer;
+      vec2 aspectDelta = vec2(pointerDelta.x * aspect, pointerDelta.y);
+      float dist = length(aspectDelta);
+      float radius = max(uPointerInfluence, 0.001);
+      float t = clamp(dist / radius, 0.0, 1.0);
+      float lens = smoothstep(radius, 0.0, dist) * uPointerActive;
+      float bulge = t * (1.0 - t) * (1.0 - t) * 6.75 * uPointerActive;
+      vec2 dir = dist > 0.0001 ? vec2(aspectDelta.x / aspect, aspectDelta.y) / dist : vec2(0.0);
+      float rippleWave = sin(dist * 28.0 - time * 4.2) * 0.5 + 0.5;
+      float rippleRing = (rippleWave - 0.5) * uRipple;
+      vec2 pointerWarp = -dir * bulge * uPointerStrength * 0.045;
+      pointerWarp += dir * rippleRing * bulge * uPointerStrength * 0.016;
+      vec2 displaced = uv + ambient + pointerWarp;
+      vec2 splitDir = ambient + pointerWarp;
+      float splitLen = length(splitDir);
+      splitDir = splitLen > 0.00001 ? splitDir / splitLen : vec2(0.7071);
+      vec2 split = splitDir * uRefraction * 0.16 * (0.35 + lens * 1.65);
+      vec4 base = sampleText(displaced);
+      float r = sampleText(displaced + split).r;
+      float g = base.g;
+      float b = sampleText(displaced - split).b;
+      float a = max(max(sampleText(displaced + split).a, base.a), sampleText(displaced - split).a);
+      fragColor = vec4(vec3(r, g, b) + lens * base.a * 0.055, a);
+    }
+  `;
+
+  const roots = document.querySelectorAll<HTMLElement>("[data-warp-text]");
+
+  roots.forEach((root) => {
+    let text = root.dataset.text ?? "";
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let renderer: Renderer | undefined;
+    let animationFrame = 0;
+    let disposed = false;
+    let texture: Texture;
+    let program: Program;
+    let mesh: Mesh;
+    let resizeObserver: ResizeObserver;
+    let intersectionObserver: IntersectionObserver;
+    let textObserver: MutationObserver;
+    let visible = true;
+    const pointer = { x: 0.5, y: 0.5, active: 0, targetActive: 0, tx: 0.5, ty: 0.5 };
+
+    const fitText = (canvas: HTMLCanvasElement, width: number, height: number) => {
+      const context = canvas.getContext("2d");
+      if (!context) return;
+      const style = getComputedStyle(root);
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.max(1, Math.floor(width * dpr));
+      canvas.height = Math.max(1, Math.floor(height * dpr));
+      context.setTransform(dpr, 0, 0, dpr, 0, 0);
+      context.clearRect(0, 0, width, height);
+      const fontSize = parseFloat(style.fontSize) || 48;
+      let fittedFontSize = fontSize;
+      const setFont = () => {
+        context.font = `${style.fontWeight} ${fittedFontSize}px ${style.fontFamily}`;
+      };
+      setFont();
+      context.fillStyle = "#f8f5ff";
+      context.textAlign = "center";
+      context.textBaseline = "middle";
+      const words = text.split(" ");
+      const lines: string[] = [];
+      let line = "";
+      const maxWidth = width * 0.98;
+      words.forEach((word) => {
+        const candidate = line ? `${line} ${word}` : word;
+        if (line && context.measureText(candidate).width > maxWidth) {
+          lines.push(line);
+          line = word;
+        } else {
+          line = candidate;
+        }
+      });
+      if (line) lines.push(line);
+      let lineHeight = fittedFontSize * 1.08;
+      const maxTextHeight = height * 0.86;
+      if (lineHeight * lines.length > maxTextHeight) {
+        fittedFontSize *= maxTextHeight / (lineHeight * lines.length);
+        lineHeight = fittedFontSize * 1.08;
+        setFont();
+      }
+      const startY = height / 2 - ((lines.length - 1) * lineHeight) / 2;
+      lines.forEach((item, index) => context.fillText(item, width / 2, startY + index * lineHeight));
+      texture.image = canvas;
+      texture.needsUpdate = true;
     };
 
-    const resetPointer = () => {
-      warpText.style.setProperty("--pointer-x", "0");
-      warpText.style.setProperty("--pointer-y", "0");
-    };
-
-    warpText.addEventListener("pointermove", updatePointer, { passive: true });
-    warpText.addEventListener("pointerleave", resetPointer, { passive: true });
+    try {
+      renderer = new Renderer({ webgl: 2, alpha: true, antialias: true, dpr: Math.min(window.devicePixelRatio || 1, 2) });
+      const gl = renderer.gl;
+      gl.clearColor(0, 0, 0, 0);
+      const canvas = gl.canvas;
+      canvas.setAttribute("aria-hidden", "true");
+      canvas.style.cssText = "position:absolute;inset:0;width:100%;height:100%;display:block";
+      root.appendChild(canvas);
+      texture = new Texture(gl, { generateMipmaps: false, minFilter: gl.LINEAR, magFilter: gl.LINEAR, wrapS: gl.CLAMP_TO_EDGE, wrapT: gl.CLAMP_TO_EDGE });
+      program = new Program(gl, {
+        vertex,
+        fragment,
+        transparent: true,
+        depthTest: false,
+        depthWrite: false,
+        uniforms: {
+          uTextTexture: { value: texture }, uResolution: { value: [1, 1] }, uPointer: { value: [0.5, 0.5] },
+          uPointerActive: { value: 0 }, uTime: { value: 0 }, uWarpStrength: { value: 0.08 }, uWarpScale: { value: 1.7 },
+          uSpeed: { value: 0.55 }, uPointerInfluence: { value: 0.42 }, uPointerStrength: { value: 0.38 }, uRefraction: { value: 0.018 },
+          uRipple: { value: 1 }, uMotion: { value: reduceMotion.matches ? 0 : 1 }
+        }
+      });
+      mesh = new Mesh(gl, { geometry: new Triangle(gl), program });
+      const resize = () => {
+        const bounds = root.getBoundingClientRect();
+        renderer?.setSize(bounds.width, bounds.height);
+        program.uniforms.uResolution.value = [gl.drawingBufferWidth, gl.drawingBufferHeight];
+        const textCanvas = document.createElement("canvas");
+        fitText(textCanvas, bounds.width, bounds.height);
+      };
+      const render = (time: number) => {
+        if (disposed) return;
+        if (visible && !document.hidden) {
+          const elapsed = time * 0.001;
+          const idleX = 0.5 + Math.sin(elapsed * 0.33) * 0.12;
+          const idleY = 0.5 + Math.cos(elapsed * 0.27) * 0.1;
+          const targetX = pointer.targetActive ? pointer.tx : idleX;
+          const targetY = pointer.targetActive ? pointer.ty : idleY;
+          const damping = pointer.targetActive ? 0.12 : 0.035;
+          pointer.x += (targetX - pointer.x) * damping;
+          pointer.y += (targetY - pointer.y) * damping;
+          pointer.active += ((pointer.targetActive ? 1 : 0.18) - pointer.active) * 0.06;
+          program.uniforms.uPointer.value = [pointer.x, pointer.y];
+          program.uniforms.uPointerActive.value = reduceMotion.matches ? pointer.active * 0.35 : pointer.active;
+          program.uniforms.uTime.value = reduceMotion.matches ? 0 : elapsed;
+          renderer?.render({ scene: mesh });
+        }
+        animationFrame = requestAnimationFrame(render);
+      };
+      const onPointerMove = (event: PointerEvent) => {
+        if (event.pointerType === "touch") return;
+        const bounds = canvas.getBoundingClientRect();
+        pointer.tx = (event.clientX - bounds.left) / bounds.width;
+        pointer.ty = 1 - (event.clientY - bounds.top) / bounds.height;
+        pointer.targetActive = 1;
+      };
+      const onPointerLeave = () => { pointer.targetActive = 0; };
+      canvas.addEventListener("pointermove", onPointerMove, { passive: true });
+      canvas.addEventListener("pointerleave", onPointerLeave, { passive: true });
+      resizeObserver = new ResizeObserver(resize);
+      resizeObserver.observe(root);
+      intersectionObserver = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; }, { threshold: 0 });
+      intersectionObserver.observe(root);
+      resize();
+      root.classList.add("warp-ready");
+      animationFrame = requestAnimationFrame(render);
+      textObserver = new MutationObserver(() => {
+        const nextText = root.dataset.text ?? text;
+        if (nextText !== text) {
+          text = nextText;
+          resize();
+        }
+      });
+      textObserver.observe(root, { attributes: true, attributeFilter: ["data-text"] });
+      window.addEventListener("pagehide", () => { disposed = true; cancelAnimationFrame(animationFrame); resizeObserver.disconnect(); intersectionObserver.disconnect(); }, { once: true });
+    } catch {
+      root.classList.add("warp-fallback-only");
+    }
   });
 </script>
 
 <style>
-  .warp-text {
-    --pointer-x: 0;
-    --pointer-y: 0;
-    position: relative;
-    isolation: isolate;
-    text-wrap: balance;
-  }
-
-  .warp-character {
-    display: inline-block;
-    min-width: 0.04em;
-    transform: translate3d(
-        calc(var(--pointer-x) * var(--character-distance, 0px)),
-        calc(var(--pointer-y) * var(--character-distance, 0px)),
-        0
-      )
-      rotateX(calc(var(--pointer-y) * -4deg))
-      rotateY(calc(var(--pointer-x) * 5deg));
-    transform-origin: 50% 70%;
-    animation: warp-character 5s ease-in-out infinite;
-    animation-delay: calc(var(--character-index) * -0.08s);
-    transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
-    will-change: transform;
-  }
-
-  .warp-word {
-    display: inline-block;
-    white-space: nowrap;
-  }
-
-  .warp-word:not(:last-of-type) {
-    margin-inline-end: 0.25em;
-  }
-
-  .warp-character:nth-child(4n) {
-    --character-distance: 2px;
-  }
-
-  .warp-character:nth-child(4n + 1) {
-    --character-distance: 3px;
-  }
-
-  .warp-character:nth-child(4n + 2) {
-    --character-distance: 4px;
-  }
-
-  .warp-character:nth-child(4n + 3) {
-    --character-distance: 2.5px;
-  }
-
-  @keyframes warp-character {
-    0%,
-    100% {
-      transform: translate3d(
-          calc(var(--pointer-x) * var(--character-distance, 0px)),
-          calc(var(--pointer-y) * var(--character-distance, 0px)),
-          0
-        )
-        rotateX(calc(var(--pointer-y) * -4deg))
-        rotateY(calc(var(--pointer-x) * 5deg));
-    }
-    50% {
-      transform: translate3d(
-          calc(var(--pointer-x) * var(--character-distance, 0px)),
-          calc(var(--pointer-y) * var(--character-distance, 0px) - 2px),
-          0
-        )
-        rotateX(calc(var(--pointer-y) * -4deg + 3deg))
-        rotateY(calc(var(--pointer-x) * 5deg - 2deg));
-    }
-  }
-
+  .warp-text { text-wrap: balance; }
+  .warp-fallback { display: block; }
+  .warp-ready .warp-fallback { opacity: 0; }
+  .warp-text canvas { pointer-events: auto; }
   @media (prefers-reduced-motion: reduce) {
-    .warp-character {
-      animation: none;
-      transition: none;
-      transform: none;
-    }
+    .warp-text canvas { opacity: 0.92; }
   }
 </style>

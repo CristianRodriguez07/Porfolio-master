@@ -104,6 +104,12 @@ const { description, title } = Astro.props;
       node = walker.nextNode();
     }
 
+    document.querySelectorAll<HTMLElement>("[data-warp-text][data-text]").forEach((element) => {
+      const text = element.dataset.text ?? "";
+      const translatedText = dictionary[text];
+      if (translatedText) element.dataset.text = translatedText;
+    });
+
     document.querySelectorAll<HTMLElement>("[aria-label]").forEach((element) => {
       const label = element.getAttribute("aria-label") ?? "";
       const translatedLabel = dictionary[label];
