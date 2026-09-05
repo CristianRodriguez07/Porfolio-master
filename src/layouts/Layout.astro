@@ -71,7 +71,6 @@ const { description, title } = Astro.props;
     "Inicio": "Home",
     "Experiencia": "Experience",
     "Contacto": "Contact",
-    "Mi CV": "My resume",
     "Portfolio en evolución.": "Portfolio in progress.",
     ". Portfolio en evolución.": ". Portfolio in progress.",
     "Foto de Cristian Rodríguez": "Photo of Cristian Rodríguez",
@@ -108,6 +107,19 @@ const { description, title } = Astro.props;
       const translatedAlt = dictionary[alt];
       if (translatedAlt) element.setAttribute("alt", translatedAlt);
     });
+    document.querySelectorAll<HTMLElement>("[data-cv-label]").forEach((element) => {
+      const label = isEnglish
+        ? element.dataset.cvLabel === "english"
+          ? "Mi CV"
+          : "My CV in Spanish"
+        : element.dataset.cvLabel === "english"
+          ? "Mi CV en Ingles"
+          : "My CV";
+      const textNode = Array.from(element.childNodes).find(
+        (child) => child.nodeType === Node.TEXT_NODE && child.textContent?.trim(),
+      );
+      if (textNode) textNode.textContent = `\n              ${label}\n            `;
+    });
 
     const description = document.querySelector<HTMLMetaElement>('meta[name="description"]');
     const spanishDescription = "Contrata a Cristian Rodríguez, Desarrollador de software Full Stack, para tu próximo proyecto.";
@@ -119,7 +131,7 @@ const { description, title } = Astro.props;
       : "Portfolio de Cristian Rodríguez - Desarrollador y Programador de software";
     document.documentElement.lang = isEnglish ? "en" : "es";
     if (languageToggle) {
-      languageToggle.textContent = isEnglish ? "Versión en español" : "My Portfolio";
+      languageToggle.textContent = isEnglish ? "Spanish Version" : "English Version";
       languageToggle.setAttribute("aria-label", isEnglish ? "Cambiar a español" : "Traducir al inglés");
     }
   };
