@@ -1,0 +1,132 @@
+---
+interface Props {
+  text: string;
+  class?: string;
+}
+
+const { class: className = "", text } = Astro.props;
+const words = text.split(" ");
+---
+
+<div
+  class={`warp-text max-w-3xl text-3xl font-semibold leading-tight tracking-tight text-white sm:text-5xl lg:text-7xl ${className}`}
+  role="heading"
+  aria-level="1"
+  data-warp-text
+>
+  {words.map((word, wordIndex) => (
+    <span class="warp-word" aria-hidden="true">
+      {[...word].map((character, characterIndex) => (
+        <span
+          class="warp-character"
+          style={`--character-index: ${wordIndex * 10 + characterIndex};`}
+        >{character}</span>
+      ))}
+    </span>
+  ))}
+  <span class="sr-only">{text}</span>
+</div>
+
+<script>
+  const warpTexts = document.querySelectorAll<HTMLElement>("[data-warp-text]");
+
+  warpTexts.forEach((warpText) => {
+    const updatePointer = (event: PointerEvent) => {
+      const bounds = warpText.getBoundingClientRect();
+      const pointerX = ((event.clientX - bounds.left) / bounds.width - 0.5) * 2;
+      const pointerY = ((event.clientY - bounds.top) / bounds.height - 0.5) * 2;
+      warpText.style.setProperty("--pointer-x", pointerX.toFixed(3));
+      warpText.style.setProperty("--pointer-y", pointerY.toFixed(3));
+    };
+
+    const resetPointer = () => {
+      warpText.style.setProperty("--pointer-x", "0");
+      warpText.style.setProperty("--pointer-y", "0");
+    };
+
+    warpText.addEventListener("pointermove", updatePointer, { passive: true });
+    warpText.addEventListener("pointerleave", resetPointer, { passive: true });
+  });
+</script>
+
+<style>
+  .warp-text {
+    --pointer-x: 0;
+    --pointer-y: 0;
+    position: relative;
+    isolation: isolate;
+    text-wrap: balance;
+  }
+
+  .warp-character {
+    display: inline-block;
+    min-width: 0.04em;
+    transform: translate3d(
+        calc(var(--pointer-x) * var(--character-distance, 0px)),
+        calc(var(--pointer-y) * var(--character-distance, 0px)),
+        0
+      )
+      rotateX(calc(var(--pointer-y) * -4deg))
+      rotateY(calc(var(--pointer-x) * 5deg));
+    transform-origin: 50% 70%;
+    animation: warp-character 5s ease-in-out infinite;
+    animation-delay: calc(var(--character-index) * -0.08s);
+    transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform;
+  }
+
+  .warp-word {
+    display: inline-block;
+    white-space: nowrap;
+  }
+
+  .warp-word:not(:last-of-type) {
+    margin-inline-end: 0.25em;
+  }
+
+  .warp-character:nth-child(4n) {
+    --character-distance: 2px;
+  }
+
+  .warp-character:nth-child(4n + 1) {
+    --character-distance: 3px;
+  }
+
+  .warp-character:nth-child(4n + 2) {
+    --character-distance: 4px;
+  }
+
+  .warp-character:nth-child(4n + 3) {
+    --character-distance: 2.5px;
+  }
+
+  @keyframes warp-character {
+    0%,
+    100% {
+      transform: translate3d(
+          calc(var(--pointer-x) * var(--character-distance, 0px)),
+          calc(var(--pointer-y) * var(--character-distance, 0px)),
+          0
+        )
+        rotateX(calc(var(--pointer-y) * -4deg))
+        rotateY(calc(var(--pointer-x) * 5deg));
+    }
+    50% {
+      transform: translate3d(
+          calc(var(--pointer-x) * var(--character-distance, 0px)),
+          calc(var(--pointer-y) * var(--character-distance, 0px) - 2px),
+          0
+        )
+        rotateX(calc(var(--pointer-y) * -4deg + 3deg))
+        rotateY(calc(var(--pointer-x) * 5deg - 2deg));
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .warp-character {
+      animation: none;
+      transition: none;
+      transform: none;
+    }
+  }
+</style>
