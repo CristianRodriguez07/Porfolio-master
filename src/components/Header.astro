@@ -1,6 +1,6 @@
 <header class="sticky top-0 z-50 px-4 pt-4" data-header>
   <div
-    class="header-shell mx-auto flex w-full max-w-[1120px] flex-col gap-3 rounded-3xl border border-white/10 bg-slate-950/55 px-3 py-3 shadow-2xl shadow-slate-950/30 backdrop-blur-xl sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:rounded-full sm:px-4 lg:px-6"
+    class="header-shell mx-auto flex w-full max-w-[1120px] items-center justify-between gap-4 rounded-full border border-white/10 bg-slate-950/55 px-4 py-3 shadow-2xl shadow-slate-950/30 backdrop-blur-xl lg:px-6"
   >
     <a href="/" class="flex min-w-0 items-center gap-3">
       <img
@@ -13,7 +13,7 @@
         <p class="header-subtitle text-xs text-slate-300">Full Stack Developer</p>
       </div>
     </a>
-    <nav class="mobile-nav grid w-full grid-cols-2 gap-2 border-t border-white/10 px-1 pt-3 text-xs font-medium text-slate-200 sm:flex sm:w-auto sm:justify-end sm:gap-3 sm:border-t-0 sm:px-0 sm:pt-0 lg:text-sm" aria-label="Navegación principal">
+    <nav class="hidden items-center justify-end gap-3 text-sm font-medium text-slate-200 md:flex" aria-label="Navegación principal">
       <a class="nav-link rounded-full border border-white/10 bg-white/5 px-3 py-2.5 text-center transition hover:-translate-y-0.5 hover:border-cyan-300/30 hover:bg-cyan-300/10 sm:shrink-0 sm:px-3.5" href="#inicio" data-section="inicio" aria-current="page">Inicio</a>
       <a class="nav-link rounded-full border border-white/10 bg-white/5 px-3 py-2.5 text-center transition hover:-translate-y-0.5 hover:border-cyan-300/30 hover:bg-cyan-300/10 sm:shrink-0 sm:px-3.5" href="#sobre-mi" data-section="sobre-mi">Sobre mí</a>
       <a class="nav-link rounded-full border border-white/10 bg-white/5 px-3 py-2.5 text-center transition hover:-translate-y-0.5 hover:border-cyan-300/30 hover:bg-cyan-300/10 sm:shrink-0 sm:px-3.5" href="#experiencia" data-section="experiencia">Experiencia</a>
@@ -24,6 +24,21 @@
   </div>
 </header>
 
+<div class="mobile-bottom-nav fixed inset-x-0 bottom-0 z-50 px-4 pb-[max(1rem,env(safe-area-inset-bottom))] md:hidden">
+  <label class="sr-only" for="mobile-section-nav">Ir a la sección</label>
+  <div class="mx-auto flex max-w-md items-center gap-3 rounded-2xl border border-white/15 bg-slate-950/90 p-2 shadow-2xl shadow-slate-950/50 backdrop-blur-xl">
+    <span class="pl-2 text-xs font-semibold uppercase tracking-[0.18em] text-cyan-100">Secciones</span>
+    <select id="mobile-section-nav" class="min-w-0 flex-1 appearance-none rounded-xl border border-white/10 bg-white/10 px-3 py-2.5 text-sm font-medium text-white outline-none transition focus:border-cyan-200/60 focus:ring-2 focus:ring-cyan-300/20">
+      <option value="inicio">Inicio</option>
+      <option value="sobre-mi">Sobre mí</option>
+      <option value="experiencia">Experiencia</option>
+      <option value="formacion">Formación</option>
+      <option value="certificaciones">Certificaciones</option>
+      <option value="skills">Skills</option>
+    </select>
+  </div>
+</div>
+
 <script>
   const header = document.querySelector<HTMLElement>("[data-header]");
   const updateHeaderState = () => header?.classList.toggle("is-scrolled", window.scrollY > 24);
@@ -32,6 +47,7 @@
   updateHeaderState();
 
   const navLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>(".nav-link[data-section]"));
+  const mobileSectionNav = document.querySelector<HTMLSelectElement>("#mobile-section-nav");
   const sections = navLinks
     .map((link) => document.getElementById(link.dataset.section ?? ""))
     .filter((section): section is HTMLElement => section !== null);
@@ -48,6 +64,7 @@
         link.removeAttribute("aria-current");
       }
     });
+    if (mobileSectionNav) mobileSectionNav.value = sectionId;
   };
 
   navLinks.forEach((link) => {
@@ -59,6 +76,16 @@
       const sectionId = link.dataset.section;
       if (sectionId) setActiveLink(sectionId);
     });
+  });
+
+  mobileSectionNav?.addEventListener("change", () => {
+    const sectionId = mobileSectionNav.value;
+    if (sectionId === "inicio") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+    setActiveLink(sectionId);
   });
 
   const sectionObserver = new IntersectionObserver(
@@ -96,41 +123,13 @@
     display: none;
   }
 
-  .mobile-nav {
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-  }
-
   .is-scrolled .header-shell {
-    flex-direction: row;
-    align-items: center;
+    border-radius: 9999px;
   }
 
-  .is-scrolled .mobile-nav {
-    min-width: 0;
-    flex: 1;
-    display: flex;
-    justify-content: flex-start;
-    gap: 0.5rem;
-    overflow-x: auto;
-    border-top: 0;
-    padding-top: 0;
-  }
-
-  .is-scrolled .mobile-nav .nav-link {
-    flex-shrink: 0;
-    padding: 0.5rem 0.75rem;
-  }
-
-  @media (min-width: 640px) {
-    .is-scrolled .mobile-nav {
-      flex: initial;
-      justify-content: flex-end;
-      overflow: visible;
+  @media (max-width: 767px) {
+    :global(body) {
+      padding-bottom: 5.5rem;
     }
-  }
-
-  .mobile-nav::-webkit-scrollbar {
-    display: none;
   }
 </style>
