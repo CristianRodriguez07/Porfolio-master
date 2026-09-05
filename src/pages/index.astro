@@ -112,6 +112,27 @@ import WarpText from "../components/WarpText.astro";
       </div>
     </SectionContainer>
 
+    <SectionContainer class="pt-0 md:pt-0">
+      <div class="grid gap-px overflow-hidden rounded-2xl border border-cyan-300/20 bg-cyan-300/15 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="bg-slate-950/65 px-4 py-4 backdrop-blur-xl sm:px-5">
+          <p class="text-2xl font-semibold text-cyan-100">2.5+</p>
+          <p class="mt-1 text-xs uppercase tracking-[0.18em] text-slate-400">Años en Process Mining</p>
+        </div>
+        <div class="bg-slate-950/65 px-4 py-4 backdrop-blur-xl sm:px-5">
+          <p class="text-2xl font-semibold text-cyan-100">Celonis</p>
+          <p class="mt-1 text-xs uppercase tracking-[0.18em] text-slate-400">Análisis y automatización</p>
+        </div>
+        <div class="bg-slate-950/65 px-4 py-4 backdrop-blur-xl sm:px-5">
+          <p class="text-2xl font-semibold text-cyan-100">POCs</p>
+          <p class="mt-1 text-xs uppercase tracking-[0.18em] text-slate-400">Ideas y soluciones técnicas</p>
+        </div>
+        <div class="bg-slate-950/65 px-4 py-4 backdrop-blur-xl sm:px-5">
+          <p class="text-2xl font-semibold text-cyan-100">SQL · Python</p>
+          <p class="mt-1 text-xs uppercase tracking-[0.18em] text-slate-400">Datos y eficiencia operativa</p>
+        </div>
+      </div>
+    </SectionContainer>
+
     <SectionContainer id="sobre-mi">
       <div class="rounded-[2rem] border border-white/10 bg-slate-950/45 p-6 shadow-2xl shadow-slate-950/20 backdrop-blur-xl md:p-8">
         <h2 class="mb-5 flex items-center gap-x-3 text-2xl font-semibold text-white">
@@ -131,19 +152,19 @@ import WarpText from "../components/WarpText.astro";
       <div class="rounded-[2rem] border border-white/10 bg-slate-950/45 p-6 shadow-2xl shadow-slate-950/20 backdrop-blur-xl md:p-8">
         <h2 class="mb-5 flex items-center gap-x-3 text-2xl font-semibold text-white">
           <CodeIcon class="size-8" />
-          Mi experiencia
+          Experiencia laboral
         </h2>
-        <div class="space-y-6">
-          <div>
-            <h3 class="text-lg font-semibold text-white">Experiencia laboral</h3>
-            <Experience />
-          </div>
+        <Experience />
+      </div>
+    </SectionContainer>
 
-          <div>
-            <h3 class="text-lg font-semibold text-white">Formación</h3>
-            <Estudios />
-          </div>
-        </div>
+    <SectionContainer id="formacion">
+      <div class="rounded-[2rem] border border-white/10 bg-slate-950/45 p-6 shadow-2xl shadow-slate-950/20 backdrop-blur-xl md:p-8">
+        <h2 class="mb-5 flex items-center gap-x-3 text-2xl font-semibold text-white">
+          <CodeIcon class="size-8" />
+          Formación académica
+        </h2>
+        <Estudios />
       </div>
     </SectionContainer>
 
