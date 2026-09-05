@@ -174,7 +174,7 @@ const { class: className = "", text } = Astro.props;
     };
 
     try {
-      renderer = new Renderer({ webgl: 2, alpha: true, antialias: true, dpr: Math.min(window.devicePixelRatio || 1, 2) });
+      renderer = new Renderer({ alpha: true, antialias: true, dpr: Math.min(window.devicePixelRatio || 1, 2) });
       const gl = renderer.gl;
       gl.clearColor(0, 0, 0, 0);
       const canvas = gl.canvas;
@@ -256,10 +256,28 @@ const { class: className = "", text } = Astro.props;
 
 <style>
   .warp-text { text-wrap: balance; }
-  .warp-fallback { display: block; }
+  .warp-fallback {
+    display: block;
+    animation: fallback-text-drift 5s ease-in-out infinite;
+    transform-origin: center left;
+  }
   .warp-ready .warp-fallback { opacity: 0; }
   .warp-text canvas { pointer-events: auto; }
+
+  @keyframes fallback-text-drift {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0) skewX(0deg);
+    }
+    50% {
+      transform: translate3d(0, -2px, 0) skewX(-0.35deg);
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
+    .warp-fallback {
+      animation: none;
+    }
     .warp-text canvas { opacity: 0.92; }
   }
 </style>
