@@ -28,6 +28,103 @@ const { description, title } = Astro.props;
     <Footer />
   </body>
 </html>
+<script>
+  const translations: Record<string, string> = {
+    "Disponible para trabajar": "Available for work",
+    "Desarrollador Full Stack / Especializado en Process Mining.": "Full Stack Developer / Specialized in Process Mining.",
+    "Soy Cristian Rodríguez, desarrollador full stack en Madrid. Me enfoco en construir productos claros, funcionales y con una identidad visual más cuidada.": "I am Cristian Rodríguez, a full stack developer based in Madrid. I focus on building clear, functional products with a thoughtful visual identity.",
+    "Ver experiencia": "View experience",
+    "Hablemos": "Let's talk",
+    "Perfil": "Profile",
+    "Desarrollador con foco en minería de procesos": "Developer focused on process mining",
+    "España": "Spain",
+    "Foco": "Focus",
+    "UI limpia y rendimiento": "Clean UI and performance",
+    "Automatizo procesos para mejorar eficiencia y reducir errores.": "I automate processes to improve efficiency and reduce errors.",
+    "Sobre mí": "About me",
+    "Soy un joven desarrollador con más de 2 años de experiencia en minería de procesos con Celonis. Trabajo con SQL y Python para automatizar y optimizar procesos, transformando datos en mejoras medibles de eficiencia y reduciendo errores operativos.": "I am a young developer with more than 2 years of experience in process mining with Celonis. I use SQL and Python to automate and optimize processes, turning data into measurable efficiency gains and reducing operational errors.",
+    "Mi objetivo es contribuir de manera significativa a la innovación tecnológica, aplicando mis conocimientos y desarrollando habilidades que me permitan ser parte activa de los cambios y avances que están transformando el futuro.": "My goal is to make a meaningful contribution to technological innovation by applying my knowledge and developing skills that allow me to play an active role in the changes shaping the future.",
+    "Mi experiencia": "My experience",
+    "Experiencia laboral": "Work experience",
+    "Formación": "Education",
+    "Certificaciones": "Certifications",
+    "Identificación y materialización de valor de negocio.": "Identifying and realizing business value.",
+    "Evaluación de procesos y priorización de oportunidades.": "Process assessment and opportunity prioritization.",
+    "Implementación técnica y configuración de la plataforma.": "Technical implementation and platform configuration.",
+    "Diseño de soluciones de Process Intelligence.": "Designing Process Intelligence solutions.",
+    "Automatización de tareas y flujos basados en insights.": "Automating tasks and insight-based flows.",
+    "Creación y presentación de demos orientadas a negocio.": "Creating and presenting business-focused demos.",
+    "Process Mining y datos": "Process Mining and data",
+    "Desarrollador": "Development",
+    "Skills de Process Mining y datos": "Process Mining and data skills",
+    "Skills de desarrollo": "Development skills",
+    "Postgrado en Desarrollo de Aplicaciones web // Blockchain - Cesur Plaza Elíptica": "Postgraduate Degree in Web Application Development // Blockchain - Cesur Plaza Elíptica",
+    "He completado un Postgrado en Desarrollo de Aplicaciones web // Blockchain, donde aprendí a desarrollar aplicaciones web y a trabajar con tecnologías emergentes como Blockchain. Este postgrado me permitió profundizar en mis conocimientos de desarrollo y adquirir nuevas habilidades que me permiten afrontar nuevos retos en el ámbito de la tecnología.": "I completed a postgraduate degree in Web Application Development // Blockchain, where I learned to build web applications and work with emerging technologies such as Blockchain. This program deepened my development knowledge and gave me new skills to take on challenges in technology.",
+    "Grado Superior en Desarrollo de Aplicaciones Multiplataforma - Cesur Plaza Elíptica": "Higher Degree in Multiplatform Application Development - Cesur Plaza Elíptica",
+    "Durante mis estudios en Desarrollo de Aplicaciones Multiplataforma (DAM), adquirí una sólida base en el diseño y desarrollo de software para diversos dispositivos. Aprendí a programar en lenguajes como Java, Kotlin, HTML y CSS, enfocándome en el desarrollo de aplicaciones en entornos Android. También me especialicé en bases de datos, trabajando con MySQL para la gestión y manipulación de datos. Además, durante un breve periodo, aprendí los fundamentos de Python, ampliando mis capacidades en el ámbito del desarrollo.": "During my studies in Multiplatform Application Development, I built a strong foundation in software design and development for different devices. I learned Java, Kotlin, HTML, and CSS, focusing on Android application development. I also specialized in databases with MySQL and learned the fundamentals of Python, expanding my development skills.",
+    "Ciencias tecnológicas | Bachillerato - IES GRAN CAPITÁN": "Technology Sciences | High School - IES GRAN CAPITÁN",
+    "Estudios de Bachillerato en la modalidad de Ciencias Tecnológicas en el IES GRAN CAPITÁN, centrado en matemáticas, física, tecnología y fundamentos de programación.": "High school studies in Technology Sciences at IES GRAN CAPITÁN, focused on mathematics, physics, technology, and programming fundamentals.",
+    "Inicio": "Home",
+    "Experiencia": "Experience",
+    "Contacto": "Contact",
+    "Mi CV": "My resume",
+    "Portfolio en evolución.": "Portfolio in progress.",
+    ". Portfolio en evolución.": ". Portfolio in progress.",
+    "Foto de Cristian Rodríguez": "Photo of Cristian Rodríguez",
+    "Navegación principal": "Main navigation",
+    "2025-Actualidad": "2025-Present",
+  };
+
+  const reverseTranslations = Object.fromEntries(
+    Object.entries(translations).map(([spanish, english]) => [english, spanish]),
+  );
+  const languageToggle = document.querySelector<HTMLButtonElement>("[data-language-toggle]");
+  let isEnglish = false;
+
+  const translatePage = () => {
+    const dictionary = isEnglish ? translations : reverseTranslations;
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    let node = walker.nextNode();
+
+    while (node) {
+      const text = node.textContent ?? "";
+      const trimmedText = text.trim();
+      const translatedText = dictionary[trimmedText];
+      if (translatedText) node.textContent = text.replace(trimmedText, translatedText);
+      node = walker.nextNode();
+    }
+
+    document.querySelectorAll<HTMLElement>("[aria-label]").forEach((element) => {
+      const label = element.getAttribute("aria-label") ?? "";
+      const translatedLabel = dictionary[label];
+      if (translatedLabel) element.setAttribute("aria-label", translatedLabel);
+    });
+    document.querySelectorAll<HTMLElement>("[alt]").forEach((element) => {
+      const alt = element.getAttribute("alt") ?? "";
+      const translatedAlt = dictionary[alt];
+      if (translatedAlt) element.setAttribute("alt", translatedAlt);
+    });
+
+    const description = document.querySelector<HTMLMetaElement>('meta[name="description"]');
+    const spanishDescription = "Contrata a Cristian Rodríguez, Desarrollador de software Full Stack, para tu próximo proyecto.";
+    const englishDescription = "Hire Cristian Rodríguez, a Full Stack software developer, for your next project.";
+    if (description) description.content = isEnglish ? englishDescription : spanishDescription;
+
+    document.title = isEnglish
+      ? "Cristian Rodríguez's Portfolio - Full Stack Developer"
+      : "Portfolio de Cristian Rodríguez - Desarrollador y Programador de software";
+    document.documentElement.lang = isEnglish ? "en" : "es";
+    if (languageToggle) {
+      languageToggle.textContent = isEnglish ? "Versión en español" : "My Portfolio";
+      languageToggle.setAttribute("aria-label", isEnglish ? "Cambiar a español" : "Traducir al inglés");
+    }
+  };
+
+  languageToggle?.addEventListener("click", () => {
+    isEnglish = !isEnglish;
+    translatePage();
+  });
+</script>
 <style is:global>
   :root {
     color-scheme: dark;
