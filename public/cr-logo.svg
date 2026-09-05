@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 768 768" role="img" aria-labelledby="title desc">
+  <title id="title">Logo CR</title>
+  <desc id="desc">Logotipo de Cristian Rodríguez</desc>
+  <defs>
+    <radialGradient id="disc" cx="45%" cy="38%" r="70%">
+      <stop offset="0" stop-color="#1b202a" />
+      <stop offset="1" stop-color="#090b10" />
+    </radialGradient>
+    <linearGradient id="metal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff" />
+      <stop offset="0.5" stop-color="#d8dce5" />
+      <stop offset="1" stop-color="#8d96a8" />
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="12" stdDeviation="12" flood-color="#000" flood-opacity="0.65" />
+    </filter>
+  </defs>
+  <circle cx="384" cy="384" r="314" fill="url(#disc)" stroke="#3e4655" stroke-width="2" />
+  <g fill="none" stroke="url(#metal)" stroke-width="31" filter="url(#shadow)">
+    <path d="M412 222c-34-28-77-44-124-44-111 0-201 90-201 201s90 201 201 201c20 0 39-3 57-8" />
+  </g>
+  <path fill="url(#metal)" filter="url(#shadow)" d="M359 281h137c70 0 116 38 116 91 0 45-31 76-82 83l82 106h-49l-124-144h75c32 0 50-17 50-43 0-27-21-44-55-44h-101v231h-49V281Z" />
+</svg>
