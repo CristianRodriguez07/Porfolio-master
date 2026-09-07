@@ -1,0 +1,189 @@
+<div class="motion-progress" aria-hidden="true"><span data-scroll-progress></span></div>
+<div class="motion-spotlight" aria-hidden="true"></div>
+
+<script>
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)");
+  const saveData = Boolean((navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData);
+  const html = document.documentElement;
+
+  html.classList.add("motion-enhanced");
+  if (reduceMotion.matches || saveData) html.classList.add("motion-lite");
+
+  const revealTargets = Array.from(document.querySelectorAll<HTMLElement>(
+    "main section > div, main aside, main article, main details, footer > div"
+  ));
+
+  revealTargets.forEach((element, index) => {
+    element.classList.add("motion-reveal");
+    element.style.setProperty("--reveal-delay", `${Math.min(index % 4, 3) * 55}ms`);
+  });
+
+  if (reduceMotion.matches || saveData || !("IntersectionObserver" in window)) {
+    revealTargets.forEach((element) => element.classList.add("is-visible"));
+  } else {
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        (entry.target as HTMLElement).classList.add("is-visible");
+        observer.unobserve(entry.target);
+      });
+    }, { rootMargin: "0px 0px -9%", threshold: 0.08 });
+    revealTargets.forEach((element) => revealObserver.observe(element));
+  }
+
+  const interactiveElements = Array.from(document.querySelectorAll<HTMLElement>("a, button, summary"));
+  interactiveElements.forEach((element) => element.classList.add("motion-action"));
+
+  const surfaces = Array.from(document.querySelectorAll<HTMLElement>(
+    "main article, main aside > div, main section > div[class*='rounded']"
+  ));
+  surfaces.forEach((surface) => surface.classList.add("motion-surface"));
+
+  if (finePointer.matches && !reduceMotion.matches && !saveData) {
+    let pointerFrame = 0;
+    let pointerX = window.innerWidth / 2;
+    let pointerY = window.innerHeight / 3;
+    window.addEventListener("pointermove", (event) => {
+      pointerX = event.clientX;
+      pointerY = event.clientY;
+      if (pointerFrame) return;
+      pointerFrame = requestAnimationFrame(() => {
+        html.style.setProperty("--pointer-x", `${pointerX}px`);
+        html.style.setProperty("--pointer-y", `${pointerY}px`);
+        pointerFrame = 0;
+      });
+    }, { passive: true });
+
+    surfaces.forEach((surface) => {
+      surface.addEventListener("pointermove", (event) => {
+        const bounds = surface.getBoundingClientRect();
+        surface.style.setProperty("--surface-x", `${event.clientX - bounds.left}px`);
+        surface.style.setProperty("--surface-y", `${event.clientY - bounds.top}px`);
+      }, { passive: true });
+    });
+  }
+
+  const progress = document.querySelector<HTMLElement>("[data-scroll-progress]");
+  let scrollFrame = 0;
+  const updateProgress = () => {
+    const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+    const value = scrollable > 0 ? Math.min(window.scrollY / scrollable, 1) : 0;
+    progress?.style.setProperty("transform", `scaleX(${value})`);
+    scrollFrame = 0;
+  };
+  window.addEventListener("scroll", () => {
+    if (!scrollFrame) scrollFrame = requestAnimationFrame(updateProgress);
+  }, { passive: true });
+  updateProgress();
+
+  const counters = Array.from(document.querySelectorAll<HTMLElement>("main p.text-3xl"));
+  const animateCounter = (element: HTMLElement) => {
+    const original = element.textContent?.trim() ?? "";
+    const match = original.match(/^(\d+(?:\.\d+)?)(.*)$/);
+    if (!match || reduceMotion.matches || saveData) return;
+    const target = Number(match[1]);
+    const suffix = match[2];
+    const decimals = match[1].includes(".") ? match[1].split(".")[1].length : 0;
+    const start = performance.now();
+    const duration = 900;
+    const tick = (now: number) => {
+      const elapsed = Math.min(Math.max((now - start) / duration, 0), 1);
+      const eased = 1 - Math.pow(1 - elapsed, 3);
+      element.textContent = `${(target * eased).toFixed(decimals)}${suffix}`;
+      if (elapsed < 1) requestAnimationFrame(tick);
+      else element.textContent = original;
+    };
+    requestAnimationFrame(tick);
+  };
+
+  if (!reduceMotion.matches && !saveData && "IntersectionObserver" in window) {
+    const counterObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        animateCounter(entry.target as HTMLElement);
+        observer.unobserve(entry.target);
+      });
+    }, { threshold: 0.7 });
+    counters.forEach((counter) => counterObserver.observe(counter));
+  }
+</script>
+
+<style is:global>
+  .motion-progress {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 70;
+    height: 2px;
+    pointer-events: none;
+  }
+  .motion-progress span {
+    display: block;
+    width: 100%;
+    height: 100%;
+    transform: scaleX(0);
+    transform-origin: left center;
+    background: linear-gradient(90deg, #22d3ee, #5eead4, #a5f3fc);
+    box-shadow: 0 0 14px rgba(34, 211, 238, .7);
+    will-change: transform;
+  }
+  .motion-spotlight {
+    position: fixed;
+    z-index: 0;
+    left: 0;
+    top: 0;
+    width: 34rem;
+    height: 34rem;
+    transform: translate3d(calc(var(--pointer-x, 50vw) - 50%), calc(var(--pointer-y, 30vh) - 50%), 0);
+    border-radius: 9999px;
+    background: radial-gradient(circle, rgba(34, 211, 238, .085), transparent 68%);
+    pointer-events: none;
+    will-change: transform;
+  }
+  .motion-enhanced .motion-reveal {
+    opacity: 0;
+    transform: translate3d(0, 22px, 0) scale(.988);
+    transition: opacity 650ms cubic-bezier(.2,.75,.25,1), transform 650ms cubic-bezier(.2,.75,.25,1);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  .motion-enhanced .motion-reveal.is-visible {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  .motion-action {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  .motion-action:active { transform: translateY(1px) scale(.975); }
+  .motion-surface {
+    position: relative;
+    isolation: isolate;
+  }
+  .motion-surface::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    opacity: 0;
+    pointer-events: none;
+    background: radial-gradient(260px circle at var(--surface-x, 50%) var(--surface-y, 50%), rgba(103, 232, 249, .11), transparent 72%);
+    transition: opacity 220ms ease;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .motion-surface:hover::after { opacity: 1; }
+    .motion-surface { transition-property: transform, border-color, box-shadow; transition-duration: 220ms; transition-timing-function: ease; }
+    .motion-surface:hover { transform: translate3d(0, -2px, 0); }
+  }
+  @media (hover: none), (pointer: coarse) {
+    .motion-spotlight { display: none; }
+    .motion-enhanced .motion-reveal { transform: translate3d(0, 14px, 0); transition-duration: 480ms; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .motion-spotlight { display: none; }
+    .motion-enhanced .motion-reveal, .motion-enhanced .motion-reveal.is-visible { opacity: 1; transform: none; transition: none; }
+    .motion-action:active, .motion-surface:hover { transform: none; }
+  }
+  .motion-lite .motion-spotlight { display: none; }
+  .motion-lite .motion-reveal, .motion-lite .motion-reveal.is-visible { opacity: 1; transform: none; transition: none; }
+</style>

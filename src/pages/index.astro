@@ -20,6 +20,8 @@ import NodejsIcon from "../components/Icons/Nodejs.astro";
 import SpringIcon from "../components/Icons/Spring.astro";
 import CelonisIcon from "../components/Icons/Celonis.astro";
 import WarpText from "../components/WarpText.astro";
+import ProcessFlow from "../components/ProcessFlow.astro";
+import ContactCTA from "../components/ContactCTA.astro";
 
 const isEnglish = Astro.url.pathname.startsWith("/en");
 const lang = isEnglish ? "en" : "es";
@@ -103,6 +105,8 @@ const otherCerts = ["Qualified Value Assessment Expert", "Qualified to Build Act
       {[["2.5+", t.years, "Process Mining · Celonis"], ["12+", t.bottlenecks, t.identified], ["70+", t.dashboards, t.assets], ["Celonis", t.intelligence, "PQL · SQL · Python"]].map(([value, label, detail]) => <div class="bg-slate-950/65 px-4 py-4 backdrop-blur-xl sm:px-5"><p class="text-3xl font-bold tracking-tight text-cyan-100">{value}</p><p class="mt-1 text-sm font-semibold text-white">{label}</p><p class="mt-1 text-xs uppercase tracking-[0.16em] text-cyan-200/75">{detail}</p></div>)}
     </div></SectionContainer>
 
+    <SectionContainer><ProcessFlow lang={lang} /></SectionContainer>
+
     <SectionContainer id="experiencia"><div class="rounded-[2rem] border border-cyan-300/15 bg-slate-950/45 p-6 shadow-2xl shadow-slate-950/20 backdrop-blur-xl md:p-8"><h2 class="mb-5 flex items-center gap-x-3 text-2xl font-semibold text-white"><CodeIcon class="size-8" />{t.experience}</h2><Experience lang={lang} /></div></SectionContainer>
 
     <SectionContainer id="sobre-mi"><div class="rounded-[2rem] border border-white/10 bg-slate-950/45 p-6 shadow-2xl shadow-slate-950/20 backdrop-blur-xl md:p-8"><h2 class="mb-5 flex items-center gap-x-3 text-2xl font-semibold text-white"><RobotIcon class="size-8" />{t.about}</h2><p class="mb-4 max-w-4xl text-lg leading-8 text-slate-300 text-pretty">{t.about1}</p><p class="max-w-4xl text-lg leading-8 text-cyan-100/80 text-pretty">{t.about2}</p></div></SectionContainer>
@@ -116,5 +120,6 @@ const otherCerts = ["Qualified Value Assessment Expert", "Qualified to Build Act
     <SectionContainer id="certificaciones"><div class="rounded-[2rem] border border-white/10 bg-slate-950/45 p-6 shadow-2xl shadow-slate-950/20 backdrop-blur-xl md:p-8"><div class="mb-5 flex items-end justify-between gap-4"><h2 class="flex items-center gap-x-3 text-2xl font-semibold text-white"><CelonisIcon class="size-9" />{t.certifications}</h2><p class="hidden text-sm text-cyan-100/70 sm:block">{t.featured}</p></div><div class="grid gap-4 md:grid-cols-3">{topCerts.map(([name, description]) => <article class="rounded-2xl border border-cyan-400/25 bg-gradient-to-br from-cyan-500/10 to-transparent p-5"><p class="text-xs uppercase tracking-[0.28em] text-cyan-200/80">Celonis</p><h3 class="mt-3 text-lg font-semibold text-white">{name}</h3><p class="mt-2 text-sm leading-6 text-slate-300">{description}</p></article>)}</div><details class="group mt-4 rounded-2xl border border-white/10 bg-white/5"><summary class="flex cursor-pointer list-none items-center justify-between px-5 py-4 text-sm font-semibold text-cyan-100"><span>{t.moreCerts}</span><span class="text-lg transition group-open:rotate-45">+</span></summary><div class="flex flex-wrap gap-2 border-t border-white/10 px-5 py-4">{otherCerts.map((cert) => <span class="rounded-full border border-white/10 bg-slate-900/60 px-3 py-2 text-sm text-slate-200">{cert}</span>)}</div></details></div></SectionContainer>
 
     <SectionContainer id="formacion"><div class="rounded-[2rem] border border-white/10 bg-slate-950/45 p-6 shadow-2xl shadow-slate-950/20 backdrop-blur-xl md:p-8"><h2 class="mb-5 flex items-center gap-x-3 text-2xl font-semibold text-white"><CodeIcon class="size-8" />{t.education}</h2><Estudios lang={lang} /></div></SectionContainer>
+    <SectionContainer><ContactCTA lang={lang} /></SectionContainer>
   </main>
 </Layout>

@@ -1,0 +1,65 @@
+---
+interface Props { lang?: "es" | "en"; }
+const { lang = "es" } = Astro.props;
+const isEnglish = lang === "en";
+const copy = isEnglish ? {
+  eyebrow: "Transformation snapshot", title: "Before and after the analysis", before: "Starting point", after: "Delivered outcome", prompt: "Compare the change",
+  beforeItems: ["Data distributed across the assistance process", "Delays and inconsistencies difficult to locate", "Limited visibility of critical process points"],
+  afterItems: ["Unified and modelled process data", "Around 30 KPIs and visualisations delivered", "2+ bottlenecks resolved with clearer prioritisation"],
+  outcome: "A shared, actionable view of the process",
+} : {
+  eyebrow: "Radiografía de la transformación", title: "Antes y después del análisis", before: "Punto de partida", after: "Resultado entregado", prompt: "Compara el cambio",
+  beforeItems: ["Datos distribuidos a lo largo del proceso de ayudas", "Retrasos e inconsistencias difíciles de localizar", "Visibilidad limitada de los puntos críticos"],
+  afterItems: ["Datos del proceso unificados y modelados", "Alrededor de 30 KPIs y visualizaciones entregados", "Más de 2 cuellos de botella resueltos y mejor priorización"],
+  outcome: "Una visión compartida y accionable del proceso",
+};
+---
+
+<div class="border-t border-white/10 p-4 sm:p-5" data-before-after>
+  <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+    <div><p class="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-200/75">{copy.eyebrow}</p><h5 class="mt-2 text-lg font-semibold text-white sm:text-xl">{copy.title}</h5></div>
+    <div class="inline-flex w-full rounded-full border border-white/10 bg-slate-950/60 p-1 sm:w-auto" role="group" aria-label={copy.prompt}>
+      <button type="button" class="comparison-toggle is-active flex-1 rounded-full px-4 py-2 text-xs font-semibold transition sm:flex-none" aria-pressed="true" data-compare-button="before">{copy.before}</button>
+      <button type="button" class="comparison-toggle flex-1 rounded-full px-4 py-2 text-xs font-semibold transition sm:flex-none" aria-pressed="false" data-compare-button="after">{copy.after}</button>
+    </div>
+  </div>
+
+  <div class="mt-5 grid items-stretch gap-3 md:grid-cols-[1fr_auto_1fr]">
+    <article class="comparison-card is-active rounded-2xl border border-white/10 bg-slate-950/55 p-4 sm:p-5" data-compare-card="before">
+      <div class="flex items-center gap-3"><span class="flex size-9 items-center justify-center rounded-full border border-amber-200/20 bg-amber-300/10 text-amber-100">○</span><h6 class="font-semibold text-white">{copy.before}</h6></div>
+      <ul class="mt-4 space-y-3">{copy.beforeItems.map((item) => <li class="flex gap-3 text-sm leading-6 text-slate-300"><span class="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-200/70"></span><span>{item}</span></li>)}</ul>
+    </article>
+    <div class="flex items-center justify-center" aria-hidden="true"><span class="comparison-arrow flex size-10 rotate-90 items-center justify-center rounded-full border border-cyan-300/25 bg-cyan-300/10 text-cyan-100 md:rotate-0"><svg class="size-5" viewBox="0 0 20 20" fill="none"><path d="M4 10h12m-4-4 4 4-4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" /></svg></span></div>
+    <article class="comparison-card rounded-2xl border border-cyan-300/20 bg-cyan-950/35 p-4 sm:p-5" data-compare-card="after">
+      <div class="flex items-center gap-3"><span class="flex size-9 items-center justify-center rounded-full border border-emerald-200/25 bg-emerald-300/10 text-emerald-100">✓</span><h6 class="font-semibold text-white">{copy.after}</h6></div>
+      <ul class="mt-4 space-y-3">{copy.afterItems.map((item) => <li class="flex gap-3 text-sm leading-6 text-slate-200"><span class="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-300"></span><span>{item}</span></li>)}</ul>
+    </article>
+  </div>
+  <p class="mt-3 rounded-xl border border-cyan-300/15 bg-cyan-300/[0.07] px-4 py-3 text-center text-sm font-semibold text-cyan-50">{copy.outcome}</p>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>("[data-before-after]").forEach((root) => {
+    const buttons = Array.from(root.querySelectorAll<HTMLButtonElement>("[data-compare-button]"));
+    const cards = Array.from(root.querySelectorAll<HTMLElement>("[data-compare-card]"));
+    buttons.forEach((button) => button.addEventListener("click", () => {
+      const selected = button.dataset.compareButton;
+      buttons.forEach((item) => {
+        const active = item === button;
+        item.classList.toggle("is-active", active);
+        item.setAttribute("aria-pressed", String(active));
+      });
+      cards.forEach((card) => card.classList.toggle("is-active", card.dataset.compareCard === selected));
+    }));
+  });
+</script>
+
+<style>
+  .comparison-toggle { color: rgb(148 163 184); }
+  .comparison-toggle.is-active { color: rgb(8 47 73); background: rgb(103 232 249); box-shadow: 0 7px 20px rgba(34,211,238,.16); }
+  .comparison-card { opacity: .68; transform: scale(.985); transition: opacity 260ms ease, transform 260ms ease, border-color 260ms ease, box-shadow 260ms ease; }
+  .comparison-card.is-active { opacity: 1; transform: scale(1); border-color: rgba(103,232,249,.34); box-shadow: 0 16px 35px rgba(8,145,178,.1); }
+  .comparison-arrow { animation: comparison-pulse 2.4s ease-in-out infinite; }
+  @keyframes comparison-pulse { 50% { box-shadow: 0 0 0 7px rgba(34,211,238,0); border-color: rgba(165,243,252,.55); } }
+  @media (prefers-reduced-motion: reduce) { .comparison-card { transition: none; } .comparison-arrow { animation: none; } }
+</style>

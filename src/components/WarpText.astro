@@ -116,6 +116,11 @@ const { class: className = "", text } = Astro.props;
   roots.forEach((root) => {
     let text = root.dataset.text ?? "";
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const saveData = Boolean((navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData);
+    if (reduceMotion.matches || saveData) {
+      root.classList.add("warp-fallback-only");
+      return;
+    }
     let renderer: Renderer | undefined;
     let animationFrame = 0;
     let disposed = false;
@@ -174,7 +179,7 @@ const { class: className = "", text } = Astro.props;
     };
 
     try {
-      renderer = new Renderer({ alpha: true, antialias: true, dpr: Math.min(window.devicePixelRatio || 1, 2) });
+      renderer = new Renderer({ alpha: true, antialias: true, dpr: Math.min(window.devicePixelRatio || 1, window.innerWidth < 768 ? 1.25 : 1.75) });
       const gl = renderer.gl;
       gl.clearColor(0, 0, 0, 0);
       const canvas = gl.canvas;

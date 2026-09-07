@@ -1,4 +1,5 @@
 ---
+import BeforeAfter from "./BeforeAfter.astro";
 export interface Props {
   title: string; description: string; highlights?: string[]; date: string; lang?: "es" | "en";
   project?: { name: string; problem: string; contribution: string; technologies: string; result: string; };
@@ -22,6 +23,7 @@ const labels = lang === "en"
     <div class="bg-slate-950/65 p-4 sm:p-5"><dt class="font-semibold text-cyan-100">{labels.technologies}</dt><dd class="mt-1 text-slate-200">{project.technologies}</dd></div>
     <div class="bg-cyan-950/55 p-4 sm:p-5"><dt class="font-semibold text-cyan-100">{labels.result}</dt><dd class="mt-1 text-white">{project.result}</dd></div>
   </dl>
+  <BeforeAfter lang={lang} />
 </article>}
 {details && <dl class="mb-4 grid gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 text-sm leading-6 sm:grid-cols-2">
   <div class="bg-slate-950/55 p-4 sm:p-5"><dt class="font-semibold text-slate-100">{labels.work}</dt><dd class="mt-1 text-slate-300">{details.work}</dd></div>

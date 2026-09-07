@@ -2,13 +2,15 @@
   import { Mesh, Program, Renderer, Triangle } from "ogl";
 
   const canvas = document.querySelector<HTMLCanvasElement>(".ghost-fibers");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const saveData = Boolean((navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData);
 
-  if (canvas) {
+  if (canvas && !reduceMotion.matches && !saveData) {
     try {
     const renderer = new Renderer({
       alpha: true,
       antialias: false,
-      dpr: Math.min(window.devicePixelRatio, 2),
+      dpr: Math.min(window.devicePixelRatio, window.innerWidth < 768 ? 1.25 : 1.75),
       canvas,
     });
     const gl = renderer.gl;
@@ -99,6 +101,7 @@
       document.documentElement.classList.add("webgl-unavailable");
     }
   }
+  else if (canvas) canvas.remove();
 </script>
 
 <style>

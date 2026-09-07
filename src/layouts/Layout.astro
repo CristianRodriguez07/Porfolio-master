@@ -2,6 +2,7 @@
 import Footer from "../components/Footer.astro";
 import GhostFibers from "../components/GhostFibers.astro";
 import Header from "../components/Header.astro";
+import MotionEnhancements from "../components/MotionEnhancements.astro";
 import "@fontsource-variable/onest";
 
 interface Props { title: string; description: string; lang?: "es" | "en"; }
@@ -49,6 +50,7 @@ const structuredData = {
   <body>
     <canvas class="ghost-fibers" aria-hidden="true"></canvas>
     <GhostFibers />
+    <MotionEnhancements />
     <Header lang={lang} />
     <slot />
     <Footer lang={lang} />
